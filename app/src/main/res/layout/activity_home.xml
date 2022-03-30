@@ -10,16 +10,32 @@
 
     <Button
         android:id="@+id/button_subj"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="100dp"
+        android:layout_marginEnd="10dp"
         android:fontFamily="sans-serif-smallcaps"
-        android:paddingHorizontal="40dp"
-        android:text="@string/new_subj"
+        android:padding="10dp"
+        android:text="Add \n subject"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_export"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView_title" />
+
+    <Button
+        android:id="@+id/button_export"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:padding="10dp"
+        android:text="Export subject data to csv"
+        app:layout_constraintBottom_toBottomOf="@id/button_subj"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/button_subj"
+        app:layout_constraintTop_toTopOf="@+id/button_subj" />
 
     <Button
         android:id="@+id/button_exp"
@@ -27,9 +43,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:fontFamily="sans-serif-smallcaps"
-        android:text="@string/new_exp"
+        android:padding="20dp"
+        android:text="add experiment"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/button_subj"
+        app:layout_constraintEnd_toEndOf="@id/button_export"
         app:layout_constraintStart_toStartOf="@+id/button_subj"
         app:layout_constraintTop_toBottomOf="@id/button_subj" />
 

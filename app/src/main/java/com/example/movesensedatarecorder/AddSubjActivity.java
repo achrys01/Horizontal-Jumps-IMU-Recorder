@@ -5,20 +5,16 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.JsonReader;
 import android.util.Log;
-import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.movesensedatarecorder.model.Subject;
 import com.example.movesensedatarecorder.utils.MsgUtils;
 import com.example.movesensedatarecorder.utils.SubjectUtils;
+import com.example.movesensedatarecorder.utils.SavingUtils;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,6 +38,7 @@ public class AddSubjActivity extends AppCompatActivity {
     private Handler handlerSave;
     private List<Subject> subjSet = new ArrayList<>();
     private String FILE_NAME = "subjects_data";
+    private String CSV_FILE_NAME = "subjects_data.csv";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +73,6 @@ public class AddSubjActivity extends AppCompatActivity {
         subjID.setText("Subject ID: " + IDnum);
     }
 
-    //Save data in CSV
     private void saveSubj() throws IOException, ClassNotFoundException {
         //error handler to fill all fields
         String mName = String.valueOf(name.getText());
@@ -127,10 +123,12 @@ public class AddSubjActivity extends AppCompatActivity {
         //create subject object
         Subject subject = new Subject(mName.toLowerCase(), mLastName.toLowerCase(), mEmail.toLowerCase(), dHeight, dWeight, IDnum);
         Log.i(TAG, "subject created: " + subject);
-        //add new subject and save
+        //read file if it exists, convert to list, add new subject to list and save
         boolean fileExist = fileExist(FILE_NAME);
         if (fileExist) {
-            readSubjectFile();
+            File oldfile = new File(getApplicationContext().getFilesDir(),FILE_NAME);
+            subjSet = SavingUtils.readSubjectFile(FILE_NAME, oldfile);
+            Log.i(TAG, "read subjects: " + subjSet);
         }
         subjSet.add(subject);
         //write into the file
@@ -143,26 +141,21 @@ public class AddSubjActivity extends AppCompatActivity {
         }
         finish();
     }
+/*
+    private void readSubjectFile() throws IOException, ClassNotFoundException {
 
-    private void readSubjectFile() throws IOException {
-        /*
+        //https://stackoverflow.com/questions/16111496/java-how-can-i-write-my-arraylist-to-a-file-and-read-load-that-file-to-the
         File oldfile = new File(getApplicationContext().getFilesDir(),FILE_NAME);
         FileInputStream fis = new FileInputStream(oldfile);
         ObjectInputStream ois = new ObjectInputStream(fis);
-        //List<Subject> subjectData = (List<Subject>) ois.readObject();
+        subjSet.clear();
+        subjSet = (List<Subject>) ois.readObject();
         ois.close();
-        subjSet = readJsonStream(ois);
-         */
-        File oldfile = new File(getApplicationContext().getFilesDir(), FILE_NAME);
-        InputStream subjectData = new BufferedInputStream(new FileInputStream(oldfile));
-        try {
-            subjSet = readJsonStream(subjectData);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
-    public boolean fileExist(String fname){
+ */
+
+    private boolean fileExist(String fname){
         File file = getBaseContext().getFileStreamPath(fname);
         return file.exists();
     }

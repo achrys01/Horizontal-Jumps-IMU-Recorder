@@ -185,11 +185,12 @@
         android:id="@+id/button_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView"
-        android:layout_marginVertical="10dp"
         android:fontFamily="sans-serif-smallcaps"
         android:text="Save subject"/>
 
