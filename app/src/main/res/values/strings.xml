@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Movesense Data Recorder</string>
+    <string name="new_subj">+ subject</string>
+    <string name="new_exp">+ experiment</string>
+    <string name="home_title">Movesense IMU Data Recorder</string>
+    <string name="add_subj_title">Add new subject</string>
+
+
+    <string name="scan_movesense_devices">Scan for Movesense devices</string>
+    <string name="no_devices_found">No devices found</string>
+    <string name="no_device">No device</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="char_not_found">Characteristic not found</string>
+    <string name="notifications_enabled">Notifications enabled</string>
+    <string name="no_data">No data</string>
+    <string name="ble_scan_stopped">BLE scan stopped</string>
+    <string name="unreachable">This should not happen!?</string>
+    <string name="unrecognized">Unrecognized data</string>
+    <string name="data">Data</string>
+</resources>
