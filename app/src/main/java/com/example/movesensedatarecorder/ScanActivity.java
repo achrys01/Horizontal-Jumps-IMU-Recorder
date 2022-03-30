@@ -71,11 +71,11 @@ public class ScanActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_scan);
+        setContentView(R.layout.activity_scan);
 
         //open as pop up window
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_scan);
+        //supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        //setContentView(R.layout.activity_scan);
 
         mHandler = new Handler();
 

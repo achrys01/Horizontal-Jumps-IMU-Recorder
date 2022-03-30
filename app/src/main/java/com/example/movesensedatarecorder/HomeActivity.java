@@ -19,13 +19,11 @@ public class HomeActivity extends AppCompatActivity {
         button_subj = findViewById(R.id.button_subj);
         button_subj.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), AddSubjActivity.class));
-            finish();
         });
 
         button_exp = findViewById(R.id.button_exp);
         button_exp.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), ScanActivity.class));
-            finish();
         });
     }
 }

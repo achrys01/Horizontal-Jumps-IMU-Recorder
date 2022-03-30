@@ -46,10 +46,11 @@ public class AddSubjActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_subj);
 
         //open as pop up window
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_add_subj);
+        //supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        //setContentView(R.layout.activity_add_subj);
 
         //ui
         subjID = findViewById(R.id.textView_subj_id);
@@ -60,14 +61,13 @@ public class AddSubjActivity extends AppCompatActivity {
         email = findViewById(R.id.edit_text_email);
         buttonSaveSubj = findViewById(R.id.button_save);
 
-        //save listener
-        buttonSaveSubj.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                try {
-                    saveSubj();
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+        //save button listener
+        buttonSaveSubj.setOnClickListener(v -> {
+            try {
+                saveSubj();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+                MsgUtils.showToast(getApplicationContext(),"could not save subject");
             }
         });
 
@@ -87,46 +87,57 @@ public class AddSubjActivity extends AppCompatActivity {
         double dHeight, dWeight;
         if (TextUtils.isEmpty(mName)) {
             name.setError("Name is required");
+            name.requestFocus();
             return;
         }
         if (TextUtils.isEmpty(mLastName)) {
             lastName.setError("Last name is required");
+            lastName.requestFocus();
             return;
         }
         if (TextUtils.isEmpty(mHeight)) {
             height.setError("Height is required");
+            height.requestFocus();
             return;
         }
         if (TextUtils.isEmpty(mWeight)) {
             weight.setError("Weight is required");
+            weight.requestFocus();
             return;
         }
         if (TextUtils.isEmpty(mEmail)) {
             email.setError("Email is required");
+            email.requestFocus();
             return;
         }
         try {
             dHeight = Double.parseDouble(mHeight);
         } catch (Exception e) {
             height.setError("Wrong input format");
+            height.requestFocus();
             return;
         }
         try {
             dWeight = Double.parseDouble(mWeight);
         } catch (Exception e) {
             weight.setError("Wrong input format");
+            weight.requestFocus();
             return;
         }
         //create subject object
-        Subject subject = new Subject(mName, mLastName, mEmail, dHeight, dWeight, IDnum);
+        Subject subject = new Subject(mName.toLowerCase(), mLastName.toLowerCase(), mEmail.toLowerCase(), dHeight, dWeight, IDnum);
         Log.i(TAG, "subject created: " + subject);
         //add new subject and save
-        readSubjectFile();
+        boolean fileExist = fileExist(FILE_NAME);
+        if (fileExist) {
+            readSubjectFile();
+        }
         subjSet.add(subject);
         //write into the file
         try {
             saveSubjectFile();
             MsgUtils.showToast(getApplicationContext(), "Subject saved");
+            finish();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -142,7 +153,6 @@ public class AddSubjActivity extends AppCompatActivity {
         ois.close();
         subjSet = readJsonStream(ois);
          */
-
         File oldfile = new File(getApplicationContext().getFilesDir(), FILE_NAME);
         InputStream subjectData = new BufferedInputStream(new FileInputStream(oldfile));
         try {
@@ -150,7 +160,11 @@ public class AddSubjActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    public boolean fileExist(String fname){
+        File file = getBaseContext().getFileStreamPath(fname);
+        return file.exists();
     }
 
     private void saveSubjectFile() throws IOException {

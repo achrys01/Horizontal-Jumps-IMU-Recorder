@@ -65,7 +65,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
-                android:text="First name"
+                android:hint="First name"
+                android:textColorHint="@color/grey"
                 android:inputType="text"
                 android:textColor="#000000"
                 android:textSize="18sp" />
@@ -90,7 +91,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
-                android:text="Last name"
+                android:hint="Last name"
+                android:textColorHint="@color/grey"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 android:inputType="text"/>
@@ -115,7 +117,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
-                android:text="170"
+                android:hint="170"
+                android:textColorHint="@color/grey"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 android:inputType="number"/>
@@ -140,9 +143,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
-                android:text="75"
+                android:hint="75"
+                android:textColorHint="@color/grey"
                 android:textColor="#000000"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:inputType="number"/>
 
         </LinearLayout>
 
@@ -164,7 +169,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
-                android:text="email@email.com"
+                android:hint="email@email.com"
+                android:textColorHint="@color/grey"
                 android:inputType="textEmailAddress"
                 android:textColor="#000000"
                 android:textSize="18sp" />
