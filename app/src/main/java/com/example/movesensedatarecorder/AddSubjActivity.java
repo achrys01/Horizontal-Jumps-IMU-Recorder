@@ -69,7 +69,7 @@ public class AddSubjActivity extends AppCompatActivity {
         });
 
         //set subj ID
-        IDnum = new SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault()).format(new Date());
+        IDnum = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         subjID.setText("Subject ID: " + IDnum);
     }
 
