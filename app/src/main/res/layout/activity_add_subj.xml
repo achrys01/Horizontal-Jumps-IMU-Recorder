@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@id/textView_title"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:textColor="@color/purple_700"
+        android:textColor="@color/grey_700"
         android:textSize="13sp" />
 
     <ScrollView
@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="First name:"
-                android:textColor="@color/purple_700"
+                android:textColor="@color/grey_700"
                 android:textSize="13sp" />
 
             <EditText
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:hint="First name"
-                android:textColorHint="@color/grey"
+                android:textColorHint="@color/grey_400"
                 android:inputType="text"
                 android:textColor="#000000"
                 android:textSize="18sp" />
@@ -83,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Last name:"
-                android:textColor="@color/purple_700"
+                android:textColor="@color/grey_700"
                 android:textSize="13sp" />
 
             <EditText
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:hint="Last name"
-                android:textColorHint="@color/grey"
+                android:textColorHint="@color/grey_400"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 android:inputType="text"/>
@@ -109,7 +109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Height (cm)"
-                android:textColor="@color/purple_700"
+                android:textColor="@color/grey_700"
                 android:textSize="13sp" />
 
             <EditText
@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:hint="170"
-                android:textColorHint="@color/grey"
+                android:textColorHint="@color/grey_400"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 android:inputType="number"/>
@@ -135,7 +135,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Weight (kg)"
-                android:textColor="@color/purple_700"
+                android:textColor="@color/grey_700"
                 android:textSize="13sp" />
 
             <EditText
@@ -144,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:hint="75"
-                android:textColorHint="@color/grey"
+                android:textColorHint="@color/grey_400"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 android:inputType="number"/>
@@ -161,7 +161,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="E-mail:"
-                android:textColor="@color/purple_700"
+                android:textColor="@color/grey_700"
                 android:textSize="13sp" />
 
             <EditText
@@ -170,7 +170,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:hint="email@email.com"
-                android:textColorHint="@color/grey"
+                android:textColorHint="@color/grey_400"
                 android:inputType="textEmailAddress"
                 android:textColor="#000000"
                 android:textSize="18sp" />

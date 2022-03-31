@@ -38,7 +38,6 @@ public class AddSubjActivity extends AppCompatActivity {
     private Handler handlerSave;
     private List<Subject> subjSet = new ArrayList<>();
     private String FILE_NAME = "subjects_data";
-    private String CSV_FILE_NAME = "subjects_data.csv";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

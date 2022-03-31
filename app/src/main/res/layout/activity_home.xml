@@ -11,9 +11,8 @@
     <Button
         android:id="@+id/button_subj"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="100dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:fontFamily="sans-serif-smallcaps"
         android:padding="10dp"
@@ -21,21 +20,23 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/button_export"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView_title" />
+        app:layout_constraintBottom_toBottomOf="@id/button_export"
+        app:layout_constraintTop_toTopOf="@+id/button_export" />
 
     <Button
         android:id="@+id/button_export"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="100dp"
         android:fontFamily="sans-serif-smallcaps"
         android:padding="10dp"
-        android:text="Export subject data to csv"
-        app:layout_constraintBottom_toBottomOf="@id/button_subj"
+        android:textStyle="bold"
+        android:text="Export subjects data to csv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/button_subj"
-        app:layout_constraintTop_toTopOf="@+id/button_subj" />
+        app:layout_constraintTop_toBottomOf="@id/textView_title"/>
 
     <Button
         android:id="@+id/button_exp"
@@ -48,7 +49,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/button_export"
         app:layout_constraintStart_toStartOf="@+id/button_subj"
-        app:layout_constraintTop_toBottomOf="@id/button_subj" />
+        app:layout_constraintTop_toBottomOf="@id/button_export" />
 
     <TextView
         android:id="@+id/textView_title"
@@ -59,7 +60,7 @@
         android:gravity="center"
         android:text="@string/home_title"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@id/button_subj"
+        app:layout_constraintBottom_toTopOf="@id/button_export"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

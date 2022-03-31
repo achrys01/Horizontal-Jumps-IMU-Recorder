@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -24,23 +23,21 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.ParcelUuid;
 import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.bluetooth.le.ScanSettings.CALLBACK_TYPE_ALL_MATCHES;
+import static com.example.movesensedatarecorder.service.UUIDs.MOVESENSE;
 import static com.example.movesensedatarecorder.service.UUIDs.MOVESENSE_2_0_SERVICE;
 import static com.example.movesensedatarecorder.utils.MsgUtils.createDialog;
 import static com.example.movesensedatarecorder.utils.MsgUtils.showToast;
 
 import com.example.movesensedatarecorder.adapters.BTDeviceAdapter;
+import com.example.movesensedatarecorder.utils.MsgUtils;
 
 public class ScanActivity extends AppCompatActivity {
 
@@ -56,6 +53,7 @@ public class ScanActivity extends AppCompatActivity {
 
     private static final List<ScanFilter> IMU_SCAN_FILTER;
     private static final ScanSettings SCAN_SETTINGS;
+
     static {
         ScanFilter scanFilter = new ScanFilter.Builder()
                 .setServiceUuid(new ParcelUuid(MOVESENSE_2_0_SERVICE)) //service UUID
@@ -81,7 +79,7 @@ public class ScanActivity extends AppCompatActivity {
 
         //ui
         mScanInfoView = findViewById(R.id.scan_info);
-        Button startScanButton = findViewById(R.id.start_scan_button);
+        Button startScanButton = findViewById(R.id.button_start_scan);
         startScanButton.setOnClickListener(v -> {
             mDeviceList.clear();
             startScanning(IMU_SCAN_FILTER, SCAN_SETTINGS, SCAN_PERIOD);
@@ -122,13 +120,24 @@ public class ScanActivity extends AppCompatActivity {
                     if (mScanning) {
                         mScanning = false;
                         scanner.stopScan(mScanCallback);
-                        showToast(getApplicationContext(),"BLE scan stopped");
+                        showToast(getApplicationContext(), "BLE scan stopped");
                     }
                 }
             }, scanPeriod);
 
             mScanning = true;
             //scanner.startScan(scanFilters, scanSettings, mScanCallback);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                MsgUtils.showToast(getApplicationContext(),"Enable bluetooth permission");
+                return;
+            }
             scanner.startScan(mScanCallback);
             mScanInfoView.setText(R.string.no_devices_found);
             showToast(getApplicationContext(),"BLE scan started");
@@ -159,15 +168,15 @@ public class ScanActivity extends AppCompatActivity {
             final BluetoothDevice device = result.getDevice();
             final String name = device.getName();
 
-            mHandler.post(new Runnable() {
-                public void run() {
-                    if (!mDeviceList.contains(device)) {
-                        mDeviceList.add(device);
-                        mAdapter.notifyDataSetChanged();
-                        String info = "Found " + mDeviceList.size() + " device(s)\n"
-                                + "Touch to connect";
-                        mScanInfoView.setText(info);
-                    }
+            mHandler.post(() -> {
+                if (name != null
+                        && name.contains(MOVESENSE)
+                        && !mDeviceList.contains(device)) {
+                    mDeviceList.add(device);
+                    mAdapter.notifyDataSetChanged();
+                    String info = "Found " + mDeviceList.size() + " device(s)\n"
+                            + "Touch to connect";
+                    mScanInfoView.setText(info);
                 }
             });
         }
@@ -201,10 +210,10 @@ public class ScanActivity extends AppCompatActivity {
 
     private void initBLE() {
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            createDialog("BLE not supported", "The application will exit.", getApplicationContext());
+            showToast(  getApplicationContext(), "BLE not supported");
             finish();
         } else {
-            showToast(getApplicationContext(),"BLE is supported");
+            //showToast(getApplicationContext(),"BLE is supported");
             // Access Location is a "dangerous" permission
             int hasAccessLocation = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_COARSE_LOCATION);
