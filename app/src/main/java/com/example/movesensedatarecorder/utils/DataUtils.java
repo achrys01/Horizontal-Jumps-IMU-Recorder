@@ -1,42 +1,44 @@
 package com.example.movesensedatarecorder.utils;
 
+import com.example.movesensedatarecorder.model.DataPoint;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.text.DecimalFormat;
 
 public class DataUtils {
 
-    public static void DataConverter(byte[] data){
+    //TODO: fix gyro data
+    public static DataPoint IMU6DataConverter(byte[] data){
+        int len = data.length;
+        int sensorNum = 2; //IMU6 has 2 sensors: acc and gyro
+        int offset = 2;
+        int dataSize = 4;
+        int coordinates = 3;
+        int numOfSamples = (len - 6) / (sensorNum * coordinates * dataSize); //sensorNum data types, 3 coordinates, 4 bytes each
+        // parse and interpret the data, ...
+        int time = DataUtils.fourBytesToInt(data, offset);
 
+        float accX = DataUtils.fourBytesToFloat(data, offset + dataSize);
+        float accY = DataUtils.fourBytesToFloat(data, offset + 2 * dataSize);
+        float accZ = DataUtils.fourBytesToFloat(data, offset + 3 * dataSize);
+
+        float gyroX = DataUtils.fourBytesToFloat(data, offset + dataSize + (numOfSamples) * 12);
+        float gyroY = DataUtils.fourBytesToFloat(data, offset + 2 * dataSize + (numOfSamples) * 12);
+        float gyroZ = DataUtils.fourBytesToFloat(data, offset + 3 * dataSize + (numOfSamples) * 12);
+
+        DataPoint datapoint = new DataPoint(time, accX, accY,accZ, gyroX, gyroY, gyroZ);
+        return datapoint;
     }
 
-    /**
-     * Convert <em>four</em> bytes to an int.
-     * @param bytes an array with bytes, of length four or greater
-     * @param offset Index of the first byte in the sequence of four.
-     * @return The (Java) int corresponding to the four bytes.
-     */
     public static int fourBytesToInt(byte[] bytes, int offset) {
         return ByteBuffer.wrap(bytes, offset, 4).order(ByteOrder.LITTLE_ENDIAN).getInt();
     }
 
-    /**
-     * Convert <em>four</em> bytes to a float.
-     * @param bytes an array with bytes, of length four or greater
-     * @param offset Index of the first byte in the sequence of four.
-     * @return The (Java) float corresponding to the four bytes.
-     */
     public static float fourBytesToFloat(byte[] bytes, int offset) {
         return ByteBuffer.wrap(bytes, offset, 4).order(ByteOrder.LITTLE_ENDIAN).getFloat();
     }
 
-    /**
-     * Create a an array of bytes representing a Movesense 2.0 command string, ASCII encoded..
-     * The first byte is always set to 1.
-     *
-     * @param id      The id used to identify this command, and incoming data from sensor.
-     * @param command The command, see http://www.movesense.com/docs/esw/api_reference/.
-     * @return An array of bytes representing a Movesense 2.0 command string.
-     */
     public static byte[] stringToAsciiArray(byte id, String command) {
         if (id > 127) throw new IllegalArgumentException("id= " + id);
         char[] chars = command.trim().toCharArray();
@@ -58,5 +60,17 @@ public class DataUtils {
             ascii[i] = (byte) chars[i];
         }
         return ascii;
+    }
+
+    public static String getAccAsStr(DataPoint dataPoint) {
+        DecimalFormat df = new DecimalFormat("0.00");
+        String accStr = "X: " + df.format(dataPoint.getAccX()) + " Y: " + df.format(dataPoint.getAccY()) + " Z: " + df.format(dataPoint.getAccZ());
+        return accStr;
+    }
+
+    public static String getGyroAsStr(DataPoint dataPoint) {
+        DecimalFormat df = new DecimalFormat("0.00");
+        String gyroStr = "X: " + df.format(dataPoint.getGyroX()) + " Y: " + df.format(dataPoint.getGyroY()) + " Z: " + df.format(dataPoint.getGyroZ());
+        return gyroStr;
     }
 }

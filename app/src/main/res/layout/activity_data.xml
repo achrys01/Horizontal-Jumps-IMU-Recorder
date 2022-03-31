@@ -24,25 +24,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/device_title_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:text="Connected to: "
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        app:layout_constraintEnd_toStartOf="@id/device_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView_title" />
-
-    <TextView
         android:id="@+id/device_view"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="start"
+        android:gravity="center"
         android:text="@string/no_device"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/device_title_view"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView_title" />
 
     <TextView
@@ -50,18 +39,52 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/no_device"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="12sp"
+        android:textColor="@color/grey_400"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/device_title_view"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/device_view" />
+
+    <TextView
+        android:id="@+id/acc_title_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="Acceleration (m/s²)"
+        android:textColor="@color/grey_400"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/status_view" />
 
     <TextView
         android:id="@+id/acc_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="No acceleration data"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@id/acc_title_view" />
+
+    <TextView
+        android:id="@+id/gyro_title_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="Angular velocity (°/s)"
+        android:textColor="@color/grey_400"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/acc_view" />
+
+    <TextView
+        android:id="@+id/gyro_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:autoSizeTextType="uniform"
         android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/no_data" />
+        android:text="No gyroscope data"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@id/gyro_title_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

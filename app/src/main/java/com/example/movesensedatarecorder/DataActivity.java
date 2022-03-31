@@ -10,11 +10,14 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.movesensedatarecorder.model.DataPoint;
 import com.example.movesensedatarecorder.service.BleIMUService;
 import com.example.movesensedatarecorder.service.GattActions;
+import com.example.movesensedatarecorder.utils.DataUtils;
 
 import java.util.ArrayList;
 
@@ -28,8 +31,7 @@ public class DataActivity extends Activity {
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
-    private TextView mAccView;
-    private TextView mStatusView;
+    private TextView mAccView, mGyroView, mStatusView, deviceView;
 
     private String mDeviceAddress;
 
@@ -46,9 +48,10 @@ public class DataActivity extends Activity {
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
         // set up ui references
-        TextView deviceView = findViewById(R.id.device_view);
-        deviceView.setText(deviceName);
+        deviceView = findViewById(R.id.device_view);
+        deviceView.setText("Connected to:\n" + deviceName);
         mAccView = findViewById(R.id.acc_view);
+        mGyroView = findViewById(R.id.gyro_view);
         mStatusView = findViewById(R.id.status_view);
 
         // NB! bind to the BleIMUService
@@ -119,13 +122,18 @@ public class DataActivity extends Activity {
                             mStatusView.setText(event.toString());
                             mStatusView.setText("Requesting data...");
                             mAccView.setText("-");
+                            mGyroView.setText("-");
                             break;
                         case DATA_AVAILABLE:
-                            ArrayList<String> data = intent.getStringArrayListExtra(MOVESENSE_DATA);
-                            Log.i(TAG, "got data: " + data);
+                            DataPoint dataPoint = (DataPoint) intent.getParcelableExtra(MOVESENSE_DATA);
+                            Log.i(TAG, "got data: " + dataPoint);
 
-                            mStatusView.setText("Received data:");
-                            mAccView.setText(data.toString());
+                            mStatusView.setText("Data received!");
+
+                            String accStr = DataUtils.getAccAsStr(dataPoint);
+                            String gyroStr = DataUtils.getGyroAsStr(dataPoint);
+                            mAccView.setText(accStr);
+                            mGyroView.setText(gyroStr);
 
                             break;
                         case MOVESENSE_SERVICE_NOT_AVAILABLE:
@@ -134,6 +142,8 @@ public class DataActivity extends Activity {
                         default:
                             mStatusView.setText("Unexpected error");
                             mAccView.setText("-");
+                            mGyroView.setText("-");
+
                     }
                 }
             }

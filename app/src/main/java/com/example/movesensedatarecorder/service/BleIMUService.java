@@ -14,9 +14,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.provider.ContactsContract;
+import android.os.Parcelable;
 import android.util.Log;
 
+import com.example.movesensedatarecorder.model.DataPoint;
 import com.example.movesensedatarecorder.utils.DataUtils;
 
 import java.util.ArrayList;
@@ -194,42 +195,10 @@ public class BleIMUService extends Service {
                 byte[] data = characteristic.getValue();
                 if (data[0] == MOVESENSE_RESPONSE && data[1] == REQUEST_ID) {
 
-                    //todo continue
-                    DataUtils.DataConverter(data);
-                    int len = data.length;
-                    int sensorNum = 2; //IMU6 has 2 sensors: acc and gyro
-                    int offset = 2;
-                    int dataSize = 4;
-                    int numOfSamples = (len - 6) / (sensorNum * 3 * dataSize); //sensorNum data types, 3 coordinates, 4 bytes each
-                    Log.i(TAG, String.valueOf(len));
-                    // parse and interpret the data, ...
-                    int time = DataUtils.fourBytesToInt(data, offset);
-                    float accX = DataUtils.fourBytesToFloat(data, offset + dataSize);
-                    float accY = DataUtils.fourBytesToFloat(data, offset + 2 * dataSize);
-                    float accZ = DataUtils.fourBytesToFloat(data, offset + 3 * dataSize);
-
-                    float gyroX = DataUtils.fourBytesToFloat(data, offset + dataSize + (numOfSamples) * 12);
-                    float gyroY = DataUtils.fourBytesToFloat(data, offset + 2 * dataSize + (numOfSamples) * 12);
-                    float gyroZ = DataUtils.fourBytesToFloat(data, offset + 3 * dataSize + (numOfSamples) * 12);
-
-                    //log
-                    String accXStr = String.valueOf(accX);
-                    String accYStr = String.valueOf(accY);
-                    String accZStr = String.valueOf(accZ);
-                    String accStr = "X: " + accXStr.substring(0, Math.min(5, accXStr.length())) + "      Y: " + accYStr.substring(0, Math.min(5, accYStr.length())) + "      Z: " + accZStr.substring(0, Math.min(5, accZStr.length()));
-                    Log.i(TAG, "time: " + time + " acc: " + accStr);
-                    String gyroXStr = String.valueOf(gyroX);
-                    String gyroYStr = String.valueOf(gyroY);
-                    String gyroZStr = String.valueOf(gyroZ);
-                    String gyroStr = "X: " + gyroXStr.substring(0, Math.min(5, gyroXStr.length())) + "      Y: " + gyroYStr.substring(0, Math.min(5, gyroYStr.length())) + "      Z: " + gyroZStr.substring(0, Math.min(5, gyroZStr.length()));
-                    Log.i(TAG, "time: " + time + " gyro: " + gyroStr);
-
-                    List<String> auxList = Arrays.asList(accXStr, accYStr, accZStr,
-                            gyroXStr, gyroYStr, gyroZStr);
-                    ArrayList<String> dataList = new ArrayList<String>(auxList);
+                    DataPoint dataPoint = DataUtils.IMU6DataConverter(data);
 
                     //broadcast data update
-                    broadcastMovesenseUpdate(dataList);
+                    broadcastMovesenseUpdate(dataPoint);
                 }
             }
         }
@@ -243,10 +212,10 @@ public class BleIMUService extends Service {
     }
 
     //Broadcast methods for data
-    private void broadcastMovesenseUpdate(final ArrayList<String> dataList) {
+    private void broadcastMovesenseUpdate(final DataPoint dataPoint) {
         final Intent intent = new Intent(ACTION_GATT_MOVESENSE_EVENTS);
         intent.putExtra(EVENT, Event.DATA_AVAILABLE);
-        intent.putStringArrayListExtra(MOVESENSE_DATA, dataList);
+        intent.putExtra(MOVESENSE_DATA, (Parcelable) dataPoint);
         sendBroadcast(intent);
     }
 
