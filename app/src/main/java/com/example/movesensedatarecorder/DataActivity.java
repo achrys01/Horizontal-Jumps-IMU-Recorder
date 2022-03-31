@@ -73,10 +73,6 @@ public class DataActivity extends Activity {
         unregisterReceiver(mGattUpdateReceiver);
     }
 
-    /*
-    NB! Unbind from service when this activity is destroyed (the service itself
-    might then stop).
-     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -84,9 +80,7 @@ public class DataActivity extends Activity {
         mBluetoothLeService = null;
     }
 
-    /*
-    Callback methods to manage the (BleHeartRate)Service lifecycle.
-    */
+    //Callback methods to manage the Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
@@ -108,9 +102,7 @@ public class DataActivity extends Activity {
         }
     };
 
-    /*
-    A BroadcastReceiver handling various events fired by the Service, see GattActions.Event.
-    */
+    //BroadcastReceiver handling various events fired by the Service, see GattActions.Event.
     private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -125,22 +117,23 @@ public class DataActivity extends Activity {
                         case MOVESENSE_NOTIFICATIONS_ENABLED:
                         case MOVESENSE_SERVICE_DISCOVERED:
                             mStatusView.setText(event.toString());
+                            mStatusView.setText("Requesting data...");
                             mAccView.setText("-");
                             break;
                         case DATA_AVAILABLE:
                             ArrayList<String> data = intent.getStringArrayListExtra(MOVESENSE_DATA);
                             Log.i(TAG, "got data: " + data);
 
-                            mStatusView.setText(R.string.data);
+                            mStatusView.setText("Received data:");
                             mAccView.setText(data.toString());
 
                             break;
                         case MOVESENSE_SERVICE_NOT_AVAILABLE:
-                            mStatusView.setText(event.toString());
+                            mStatusView.setText("IMU6 service not available");
                             break;
                         default:
-                            mStatusView.setText(R.string.unreachable);
-                            mAccView.setText("?");
+                            mStatusView.setText("Unexpected error");
+                            mAccView.setText("-");
                     }
                 }
             }

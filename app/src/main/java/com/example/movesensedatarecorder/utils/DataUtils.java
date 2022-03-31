@@ -5,6 +5,10 @@ import java.nio.ByteOrder;
 
 public class DataUtils {
 
+    public static void DataConverter(byte[] data){
+
+    }
+
     /**
      * Convert <em>four</em> bytes to an int.
      * @param bytes an array with bytes, of length four or greater

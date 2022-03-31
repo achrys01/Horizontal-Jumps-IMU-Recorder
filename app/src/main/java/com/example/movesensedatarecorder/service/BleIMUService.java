@@ -16,7 +16,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.provider.ContactsContract;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.movesensedatarecorder.utils.DataUtils;
 
@@ -35,6 +34,8 @@ import static com.example.movesensedatarecorder.service.UUIDs.REQUEST_ID;
 
 
 public class BleIMUService extends Service {
+
+    private final static String TAG = BleIMUService.class.getSimpleName();
 
     private BluetoothManager mBluetoothManager;
     private BluetoothAdapter mBluetoothAdapter;
@@ -70,8 +71,7 @@ public class BleIMUService extends Service {
     }
 
     public boolean initialize() {
-        // For API level 18 and above, get a reference to BluetoothAdapter through
-        // BluetoothManager.
+        // For API level 18 and above, get a reference to BluetoothAdapter through BluetoothManager.
         if (mBluetoothManager == null) {
             mBluetoothManager =
                     (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
@@ -193,8 +193,9 @@ public class BleIMUService extends Service {
             if (MOVESENSE_2_0_DATA_CHARACTERISTIC.equals(characteristic.getUuid())) {
                 byte[] data = characteristic.getValue();
                 if (data[0] == MOVESENSE_RESPONSE && data[1] == REQUEST_ID) {
-                    // NB! use length of the array to determine the number of values in this
-                    // "packet", the number of values in the packet depends on the frequency set(!)
+
+                    //todo continue
+                    DataUtils.DataConverter(data);
                     int len = data.length;
                     int sensorNum = 2; //IMU6 has 2 sensors: acc and gyro
                     int offset = 2;
@@ -227,58 +228,37 @@ public class BleIMUService extends Service {
                             gyroXStr, gyroYStr, gyroZStr);
                     ArrayList<String> dataList = new ArrayList<String>(auxList);
 
-                    broadcastHeartRateUpdate(dataList);
+                    //broadcast data update
+                    broadcastMovesenseUpdate(dataList);
                 }
             }
         }
     };
 
-    /*
-    public boolean setCharacteristicNotification(
-            BluetoothGattCharacteristic characteristic, boolean enabled) {
-        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-            Log.i(TAG, "BluetoothAdapter not initialized");
-            return false;
-        }
-        // first: call setCharacteristicNotification (client side)
-        boolean result = mBluetoothGatt.setCharacteristicNotification(
-                characteristic, enabled);
-
-        // second: set enable notification server side (sensor)
-        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
-                CLIENT_CHARACTERISTIC_CONFIG);
-        descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-        mBluetoothGatt.writeDescriptor(descriptor);
-        return result;
-    }
-     */
-
-    /*
-    Broadcast methods for events and data
-     */
+    //Broadcast methods for events
     private void broadcastUpdate(final Event event) {
         final Intent intent = new Intent(ACTION_GATT_MOVESENSE_EVENTS);
         intent.putExtra(EVENT, event);
         sendBroadcast(intent);
     }
 
-    private void broadcastHeartRateUpdate(final ArrayList<String> dataList) {
+    //Broadcast methods for data
+    private void broadcastMovesenseUpdate(final ArrayList<String> dataList) {
         final Intent intent = new Intent(ACTION_GATT_MOVESENSE_EVENTS);
         intent.putExtra(EVENT, Event.DATA_AVAILABLE);
         intent.putStringArrayListExtra(MOVESENSE_DATA, dataList);
         sendBroadcast(intent);
     }
 
-
-    /*
-    Android Service specific code for binding and unbinding to this Android service
-     */
+    //Android Service specific code for binding and unbinding to this Android service
     public class LocalBinder extends Binder {
         public BleIMUService getService() {
 
             return BleIMUService.this;
         }
     }
+
+    private final IBinder mBinder = new LocalBinder();
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -287,21 +267,13 @@ public class BleIMUService extends Service {
 
     @Override
     public boolean onUnbind(Intent intent) {
-        // After using a given device, you should make sure that BluetoothGatt.close()
-        // is called such that resources are cleaned up properly.  In this particular
-        // example, close() is invoked when the UI is disconnected from the Service.
+        //close() is invoked when the UI is disconnected from the Service.
         close();
         return super.onUnbind(intent);
     }
 
-    private final IBinder mBinder = new LocalBinder();
 
-
-    /*
-    logging and debugging
-     */
-    private final static String TAG = BleIMUService.class.getSimpleName();
-
+    //logging and debugging
     private void logServices(BluetoothGatt gatt) {
         List<BluetoothGattService> services = gatt.getServices();
         for (BluetoothGattService service : services) {
@@ -310,6 +282,7 @@ public class BleIMUService extends Service {
         }
     }
 
+    //logging and debugging
     private void logCharacteristics(BluetoothGattService gattService) {
         List<BluetoothGattCharacteristic> characteristics =
                 gattService.getCharacteristics();
