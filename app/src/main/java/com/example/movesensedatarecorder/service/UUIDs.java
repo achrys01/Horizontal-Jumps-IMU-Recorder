@@ -15,7 +15,7 @@ public class UUIDs {
     public static final UUID CLIENT_CHARACTERISTIC_CONFIG =
             UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
 
-    public static final String IMU_COMMAND = "Meas/IMU6/104"; // see documentation
+    public static final String IMU_COMMAND = "Meas/IMU6/52"; // see documentation
     public static final String MOVESENSE = "Movesense"; // filter for Movesense device
     public static final byte MOVESENSE_REQUEST = 1, MOVESENSE_RESPONSE = 2, REQUEST_ID = 99;
 

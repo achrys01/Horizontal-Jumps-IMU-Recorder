@@ -120,7 +120,7 @@ public class ScanActivity extends AppCompatActivity {
                     if (mScanning) {
                         mScanning = false;
                         scanner.stopScan(mScanCallback);
-                        showToast(getApplicationContext(), "BLE scan stopped");
+                        //showToast(getApplicationContext(), "BLE scan stopped");
                     }
                 }
             }, scanPeriod);
@@ -144,16 +144,13 @@ public class ScanActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    Stop scanning for Ble devices
-     */
     private void stopScanning() {
         if (mScanning) {
             BluetoothLeScanner scanner =
                     mBluetoothAdapter.getBluetoothLeScanner();
             scanner.stopScan(mScanCallback);
             mScanning = false;
-            showToast(getApplicationContext(),"BLE scan stopped");
+            //showToast(getApplicationContext(),"BLE scan stopped");
         }
     }
 
@@ -188,9 +185,6 @@ public class ScanActivity extends AppCompatActivity {
         }
     };
 
-    /*
-    Device selected, start HeartRateActivity (displaying data)
-    */
     private void onDeviceSelected(int position) {
         BluetoothDevice selectedDevice = mDeviceList.get(position);
         Intent intent = new Intent(ScanActivity.this, DataActivity.class);

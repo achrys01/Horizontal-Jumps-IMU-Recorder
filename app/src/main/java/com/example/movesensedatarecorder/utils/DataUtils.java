@@ -1,10 +1,14 @@
 package com.example.movesensedatarecorder.utils;
 
+import android.util.Log;
+
 import com.example.movesensedatarecorder.model.DataPoint;
 
+import java.lang.reflect.Executable;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 
 public class DataUtils {
 
@@ -17,18 +21,25 @@ public class DataUtils {
         int coordinates = 3;
         int numOfSamples = (len - 6) / (sensorNum * coordinates * dataSize); //sensorNum data types, 3 coordinates, 4 bytes each
         // parse and interpret the data, ...
-        int time = DataUtils.fourBytesToInt(data, offset);
+        Log.i("data length: ", String.valueOf(len));
+        Log.i("data: ", Arrays.toString(data));
+        if(((len - 6f) / (sensorNum * coordinates * dataSize)) % 1 == 0){
 
-        float accX = DataUtils.fourBytesToFloat(data, offset + dataSize);
-        float accY = DataUtils.fourBytesToFloat(data, offset + 2 * dataSize);
-        float accZ = DataUtils.fourBytesToFloat(data, offset + 3 * dataSize);
+            int time = DataUtils.fourBytesToInt(data, offset);
 
-        float gyroX = DataUtils.fourBytesToFloat(data, offset + dataSize + (numOfSamples) * 12);
-        float gyroY = DataUtils.fourBytesToFloat(data, offset + 2 * dataSize + (numOfSamples) * 12);
-        float gyroZ = DataUtils.fourBytesToFloat(data, offset + 3 * dataSize + (numOfSamples) * 12);
+            float accX = DataUtils.fourBytesToFloat(data, offset + dataSize);
+            float accY = DataUtils.fourBytesToFloat(data, offset + 2 * dataSize);
+            float accZ = DataUtils.fourBytesToFloat(data, offset + 3 * dataSize);
 
-        DataPoint datapoint = new DataPoint(time, accX, accY,accZ, gyroX, gyroY, gyroZ);
-        return datapoint;
+            float gyroX = DataUtils.fourBytesToFloat(data, offset + dataSize + (numOfSamples) * 12);
+            float gyroY = DataUtils.fourBytesToFloat(data, offset + 2 * dataSize + (numOfSamples) * 12);
+            float gyroZ = DataUtils.fourBytesToFloat(data, offset + 3 * dataSize + (numOfSamples) * 12);
+
+            DataPoint datapoint = new DataPoint(time, accX, accY,accZ, gyroX, gyroY, gyroZ);
+            return datapoint;
+        } else {
+            return null;
+        }
     }
 
     public static int fourBytesToInt(byte[] bytes, int offset) {

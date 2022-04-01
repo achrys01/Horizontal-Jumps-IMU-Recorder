@@ -126,7 +126,7 @@ public class DataActivity extends Activity {
                             break;
                         case DATA_AVAILABLE:
                             DataPoint dataPoint = (DataPoint) intent.getParcelableExtra(MOVESENSE_DATA);
-                            Log.i(TAG, "got data: " + dataPoint);
+                            //Log.i(TAG, "got data: " + dataPoint);
 
                             mStatusView.setText("Data received!");
 

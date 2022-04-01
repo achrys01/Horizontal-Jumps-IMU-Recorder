@@ -13,6 +13,7 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.Parcelable;
 import android.util.Log;
@@ -23,6 +24,7 @@ import com.example.movesensedatarecorder.utils.DataUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static com.example.movesensedatarecorder.service.GattActions.*;
 import static com.example.movesensedatarecorder.service.UUIDs.CLIENT_CHARACTERISTIC_CONFIG;
@@ -137,6 +139,13 @@ public class BleIMUService extends Service {
                                     MOVESENSE_2_0_COMMAND_CHARACTERISTIC);
                     // command example: 1, 99, "/Meas/Acc/13"
 
+                    /*
+                    byte[] unsubscribeCommand = new byte[2];
+                    unsubscribeCommand[0] = 2;
+                    unsubscribeCommand[1] = 99;
+                    commandChar.setValue(unsubscribeCommand);
+                     */
+
                     byte[] command =
                             DataUtils.stringToAsciiArray(REQUEST_ID, IMU_COMMAND);
                     commandChar.setValue(command);
@@ -197,6 +206,11 @@ public class BleIMUService extends Service {
 
                     DataPoint dataPoint = DataUtils.IMU6DataConverter(data);
 
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        if (Objects.isNull(dataPoint)){
+                            return;
+                        }
+                    }
                     //broadcast data update
                     broadcastMovesenseUpdate(dataPoint);
                 }
