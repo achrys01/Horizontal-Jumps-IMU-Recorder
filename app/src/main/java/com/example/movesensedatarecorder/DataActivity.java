@@ -10,16 +10,14 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.provider.ContactsContract;
 import android.util.Log;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.movesensedatarecorder.model.DataPoint;
 import com.example.movesensedatarecorder.service.BleIMUService;
 import com.example.movesensedatarecorder.service.GattActions;
 import com.example.movesensedatarecorder.utils.DataUtils;
-
-import java.util.ArrayList;
 
 import static com.example.movesensedatarecorder.service.GattActions.ACTION_GATT_MOVESENSE_EVENTS;
 import static com.example.movesensedatarecorder.service.GattActions.EVENT;
@@ -28,13 +26,14 @@ import static com.example.movesensedatarecorder.service.GattActions.MOVESENSE_DA
 public class DataActivity extends Activity {
 
     private final static String TAG = DataActivity.class.getSimpleName();
+
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
     private TextView mAccView, mGyroView, mStatusView, deviceView;
+    private ImageButton buttonRecord;
 
     private String mDeviceAddress;
-
     private BleIMUService mBluetoothLeService;
 
     @Override
@@ -58,6 +57,12 @@ public class DataActivity extends Activity {
         // Use onResume or onStart to register a BroadcastReceiver.
         Intent gattServiceIntent = new Intent(this, BleIMUService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+
+        //record button listener
+        buttonRecord = findViewById(R.id.button_recording);
+        buttonRecord.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), NewExpActivity.class));
+        });
     }
 
     @Override

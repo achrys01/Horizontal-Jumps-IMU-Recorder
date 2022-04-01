@@ -3,8 +3,8 @@
     <string name="new_subj">+ subject</string>
     <string name="new_exp">+ experiment</string>
     <string name="home_title">Movesense IMU Data Recorder</string>
-    <string name="add_subj_title">Add new subject</string>
-
+    <string name="add_subj_title">add new subject</string>
+    <string name="scan_title">connect sensor</string>
 
     <string name="scan_movesense_devices">Scan for Movesense devices</string>
     <string name="no_devices_found">No devices found</string>

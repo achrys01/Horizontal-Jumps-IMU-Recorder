@@ -3,7 +3,6 @@ package com.example.movesensedatarecorder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.JsonReader;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,14 +10,11 @@ import android.widget.TextView;
 
 import com.example.movesensedatarecorder.model.Subject;
 import com.example.movesensedatarecorder.utils.MsgUtils;
-import com.example.movesensedatarecorder.utils.SubjectUtils;
 import com.example.movesensedatarecorder.utils.SavingUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,10 +39,6 @@ public class AddSubjActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_subj);
-
-        //open as pop up window
-        //supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        //setContentView(R.layout.activity_add_subj);
 
         //ui
         subjID = findViewById(R.id.textView_subj_id);
@@ -140,19 +132,6 @@ public class AddSubjActivity extends AppCompatActivity {
         }
         finish();
     }
-/*
-    private void readSubjectFile() throws IOException, ClassNotFoundException {
-
-        //https://stackoverflow.com/questions/16111496/java-how-can-i-write-my-arraylist-to-a-file-and-read-load-that-file-to-the
-        File oldfile = new File(getApplicationContext().getFilesDir(),FILE_NAME);
-        FileInputStream fis = new FileInputStream(oldfile);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        subjSet.clear();
-        subjSet = (List<Subject>) ois.readObject();
-        ois.close();
-    }
-
- */
 
     private boolean fileExist(String fname){
         File file = getBaseContext().getFileStreamPath(fname);
@@ -167,9 +146,4 @@ public class AddSubjActivity extends AppCompatActivity {
         oos.close();
     }
 
-    public List<Subject> readJsonStream(InputStream in) throws IOException {
-        try (JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"))) {
-            return SubjectUtils.parseSubjects(reader);
-        }
-    }
 }

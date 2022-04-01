@@ -14,4 +14,18 @@
         <!-- Customize your theme here. -->
         <item name="fontFamily">android:fontFamily="sans-serif-smallcaps"</item>
     </style>
+    <style name="AddSubj.Dialog" parent="Theme.AppCompat.Dialog">
+        <item name="windowFixedWidthMajor">90%</item>
+        <item name="windowFixedWidthMinor">90%</item>
+        <item name="windowFixedHeightMajor">75%</item>
+        <item name="windowFixedHeightMinor">75%</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Scan.Dialog" parent="Theme.AppCompat.Dialog">
+        <item name="windowFixedWidthMajor">90%</item>
+        <item name="windowFixedWidthMinor">90%</item>
+        <item name="windowFixedHeightMajor">60%</item>
+        <item name="windowFixedHeightMinor">60%</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>

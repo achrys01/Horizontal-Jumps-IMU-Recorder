@@ -81,10 +81,6 @@ public class ScanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
 
-        //open as pop up window
-        //supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        //setContentView(R.layout.activity_scan);
-
         mHandler = new Handler();
 
         //ui
