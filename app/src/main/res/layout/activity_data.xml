@@ -13,38 +13,133 @@
         android:id="@+id/textView_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:fontFamily="sans-serif-smallcaps"
         android:gravity="center"
         android:text="new experiment"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@id/device_view"
+        app:layout_constraintBottom_toTopOf="@id/linear_layout_recording"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/device_view"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/no_device"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView_title" />
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/recording_button"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/linear_layout_recording">
 
-    <TextView
-        android:id="@+id/status_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/no_device"
-        android:textSize="12sp"
-        android:textColor="@color/grey_400"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subject:"
+                android:textColor="@color/grey_700"
+                android:textSize="13sp" />
+
+            <Spinner
+                android:id="@+id/spinner_subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:textColorHint="@color/grey_400"
+                android:inputType="text"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Movement:"
+                android:textColor="@color/grey_700"
+                android:textSize="13sp" />
+
+            <Spinner
+                android:id="@+id/spinner_movement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:textColorHint="@color/grey_400"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:inputType="text"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sensor location:"
+                android:textColor="@color/grey_700"
+                android:textSize="13sp" />
+
+            <Spinner
+                android:id="@+id/edit_text_height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:textColorHint="@color/grey_400"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:inputType="number"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recording time:"
+                android:textColor="@color/grey_700"
+                android:textSize="13sp" />
+
+            <Spinner
+                android:id="@+id/recordingTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:textColorHint="@color/grey_400"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:inputType="number"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/recording_button"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/start_record_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/device_view" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/acc_title_view"
@@ -54,7 +149,7 @@
         android:gravity="center"
         android:text="Acceleration (m/s²)"
         android:textColor="@color/grey_400"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@id/status_view" />
 
     <TextView
@@ -63,7 +158,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="No acceleration data"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@id/acc_title_view" />
 
     <TextView
@@ -74,7 +169,7 @@
         android:gravity="center"
         android:text="Angular velocity (°/s)"
         android:textColor="@color/grey_400"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@id/acc_view" />
 
     <TextView
@@ -84,7 +179,31 @@
         android:autoSizeTextType="uniform"
         android:gravity="center"
         android:text="No gyroscope data"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@id/gyro_title_view" />
+
+    <TextView
+        android:id="@+id/device_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/no_device"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/status_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_device"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/grey_400"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/device_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
