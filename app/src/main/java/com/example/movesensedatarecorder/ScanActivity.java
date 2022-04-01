@@ -38,6 +38,7 @@ import static com.example.movesensedatarecorder.utils.MsgUtils.showToast;
 
 import com.example.movesensedatarecorder.adapters.BTDeviceAdapter;
 import com.example.movesensedatarecorder.utils.MsgUtils;
+import com.example.movesensedatarecorder.utils.PermissionUtility;
 
 public class ScanActivity extends AppCompatActivity {
 
@@ -53,6 +54,15 @@ public class ScanActivity extends AppCompatActivity {
 
     private static final List<ScanFilter> IMU_SCAN_FILTER;
     private static final ScanSettings SCAN_SETTINGS;
+
+    private String[] PERMISSIONS = {
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            android.Manifest.permission.BLUETOOTH_CONNECT,
+            android.Manifest.permission.BLUETOOTH_SCAN,
+            android.Manifest.permission.BLUETOOTH_ADMIN
+    };
+    private PermissionUtility permissionUtility;
 
     static {
         ScanFilter scanFilter = new ScanFilter.Builder()
@@ -128,19 +138,12 @@ public class ScanActivity extends AppCompatActivity {
             mScanning = true;
             //scanner.startScan(scanFilters, scanSettings, mScanCallback);
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
                 MsgUtils.showToast(getApplicationContext(),"Enable bluetooth permission");
                 return;
             }
             scanner.startScan(mScanCallback);
             mScanInfoView.setText(R.string.no_devices_found);
-            showToast(getApplicationContext(),"BLE scan started");
+            //showToast(getApplicationContext(),"BLE scan started");
         }
     }
 
@@ -154,9 +157,7 @@ public class ScanActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    Callback methods for the BluetoothLeScanner
-     */
+    //Callback methods for the BluetoothLeScanner
     private ScanCallback mScanCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
@@ -194,11 +195,7 @@ public class ScanActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-    /*
-    This part handle requests for user permissions to access and turn on Bluetooth.
-    This is boilerplate code needed for Ble on a Android device, not that interesting...
-     */
+    //requests for user permissions to access and turn on Bluetooth.
     public static final int REQUEST_ENABLE_BT = 1000;
     public static final int REQUEST_ACCESS_LOCATION = 1001;
 
@@ -207,16 +204,11 @@ public class ScanActivity extends AppCompatActivity {
             showToast(  getApplicationContext(), "BLE not supported");
             finish();
         } else {
-            //showToast(getApplicationContext(),"BLE is supported");
-            // Access Location is a "dangerous" permission
-            int hasAccessLocation = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION);
-            if (hasAccessLocation != PackageManager.PERMISSION_GRANTED) {
-                // ask the user for permission
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        REQUEST_ACCESS_LOCATION);
-                // the callback method onRequestPermissionsResult gets the result of this request
+            permissionUtility = new PermissionUtility(this, PERMISSIONS);
+            if(permissionUtility.arePermissionsEnabled()){
+                Log.d(TAG, "Permission granted 1");
+            } else {
+                permissionUtility.requestMultiplePermissions();
             }
         }
 
@@ -231,16 +223,10 @@ public class ScanActivity extends AppCompatActivity {
 
     // callback for ActivityCompat.requestPermissions
     @Override
-    public void onRequestPermissionsResult(
-            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_ACCESS_LOCATION) {
-            // if request is cancelled, the result arrays are empty
-            if (grantResults.length == 0
-                    || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                // stop this activity
-                this.finish();
-            }
+        if(permissionUtility.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
+            Log.d(TAG, "Permission granted 2");
         }
     }
 
