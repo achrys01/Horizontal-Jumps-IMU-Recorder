@@ -84,4 +84,8 @@ public class DataUtils {
         String gyroStr = "X: " + df.format(dataPoint.getGyroX()) + " Y: " + df.format(dataPoint.getGyroY()) + " Z: " + df.format(dataPoint.getGyroZ());
         return gyroStr;
     }
+
+    public static void saveDataToList(DataPoint dataPoint) {
+        //TODO
+    }
 }

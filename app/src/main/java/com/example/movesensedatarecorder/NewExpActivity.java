@@ -22,6 +22,11 @@ import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import static com.example.movesensedatarecorder.DataActivity.EXTRAS_EXP_LOC;
+import static com.example.movesensedatarecorder.DataActivity.EXTRAS_EXP_MOV;
+import static com.example.movesensedatarecorder.DataActivity.EXTRAS_EXP_SUBJ;
+import static com.example.movesensedatarecorder.DataActivity.EXTRAS_EXP_TIME;
+
 public class NewExpActivity extends AppCompatActivity {
 
     private static final String TAG = NewExpActivity.class.getSimpleName();
@@ -42,11 +47,11 @@ public class NewExpActivity extends AppCompatActivity {
                 subjSet = SavingUtils.readSubjectFile(FILE_NAME, oldfile);
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
-                MsgUtils.showToast(getApplicationContext(),"add subject");
+                MsgUtils.showToast(getApplicationContext(),"add subjects");
                 finish();
             }
         } else {
-            MsgUtils.showToast(getApplicationContext(),"add subject");
+            MsgUtils.showToast(getApplicationContext(),"add subjects");
             finish();
         }
 
@@ -85,8 +90,10 @@ public class NewExpActivity extends AppCompatActivity {
         buttonRecord.setOnClickListener(v -> {
             //startActivity(new Intent(getApplicationContext(), DataActivity.class));
             setResult(Activity.RESULT_OK,
-                    new Intent().putExtra("subject", subjSpinner.getSelectedItem().toString())
-                            .putExtra("movement", movSpinner.getSelectedItem().toString()));
+                    new Intent().putExtra(EXTRAS_EXP_SUBJ, subjSpinner.getSelectedItem().toString())
+                            .putExtra(EXTRAS_EXP_MOV, movSpinner.getSelectedItem().toString())
+                            .putExtra(EXTRAS_EXP_LOC, locSpinner.getSelectedItem().toString())
+                            .putExtra(EXTRAS_EXP_TIME, timeSpinner.getSelectedItem().toString()));
             finish();
         });
 

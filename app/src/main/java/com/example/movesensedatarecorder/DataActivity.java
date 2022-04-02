@@ -34,13 +34,20 @@ public class DataActivity extends Activity {
 
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
+
     private static final int REQUEST_SUBJECT = 0;
+    public static final String EXTRAS_EXP_SUBJ = "EXP_SUBJ";
+    public static final String EXTRAS_EXP_MOV = "EXP_MOV";
+    public static final String EXTRAS_EXP_LOC = "EXP_LOC";
+    public static final String EXTRAS_EXP_TIME = "EXP_TIME";
 
     private TextView mAccView, mGyroView, mStatusView, deviceView;
     private ImageButton buttonRecord;
 
     private String mDeviceAddress;
     private BleIMUService mBluetoothLeService;
+
+    private boolean record = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,9 +83,13 @@ public class DataActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SUBJECT && resultCode == Activity.RESULT_OK) {
-            String subject = data.getStringExtra("subject");
-            String movement = data.getStringExtra("movement");
-            MsgUtils.showToast(getApplicationContext(),"got: "+subject+"-"+movement);
+            String subject = data.getStringExtra(EXTRAS_EXP_SUBJ);
+            String movement = data.getStringExtra(EXTRAS_EXP_MOV);
+            String location = data.getStringExtra(EXTRAS_EXP_LOC);
+            String time = data.getStringExtra(EXTRAS_EXP_TIME);
+            record = true;
+            Log.i(TAG, "received: "+ subject + movement + location + time);
+            //TODO startRecording();
         }
     }
 
@@ -150,8 +161,11 @@ public class DataActivity extends Activity {
                             DataPoint dataPoint = (DataPoint) intent.getParcelableExtra(MOVESENSE_DATA);
                             //Log.i(TAG, "got data: " + dataPoint);
 
+                            //Todo
+                            if(record){
+                                DataUtils.saveDataToList(dataPoint);
+                            }
                             mStatusView.setText("Data received!");
-
                             String accStr = DataUtils.getAccAsStr(dataPoint);
                             String gyroStr = DataUtils.getGyroAsStr(dataPoint);
                             mAccView.setText(accStr);
