@@ -58,7 +58,8 @@
                 android:textColorHint="@color/grey_400"
                 android:inputType="text"
                 android:textColor="#000000"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:dropDownWidth="match_parent"/>
 
         </LinearLayout>
 
@@ -83,7 +84,8 @@
                 android:textColorHint="@color/grey_400"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                android:inputType="text"/>
+                android:inputType="text"
+                android:dropDownWidth="match_parent"/>
 
         </LinearLayout>
 
@@ -101,14 +103,15 @@
                 android:textSize="13sp" />
 
             <Spinner
-                android:id="@+id/edit_text_height"
+                android:id="@+id/spinner_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:textColorHint="@color/grey_400"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:dropDownWidth="match_parent"/>
 
         </LinearLayout>
 
@@ -126,14 +129,15 @@
                 android:textSize="13sp" />
 
             <Spinner
-                android:id="@+id/recordingTime"
+                android:id="@+id/spinner_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:textColorHint="@color/grey_400"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:dropDownWidth="match_parent"/>
 
         </LinearLayout>
 

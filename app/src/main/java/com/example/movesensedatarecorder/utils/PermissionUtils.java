@@ -7,10 +7,10 @@ import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import java.util.ArrayList;
 import java.util.List;
-public class PermissionUtility {
+public class PermissionUtils {
     private Context context;
     private String[] PERMISSIONS;
-    public PermissionUtility(Context context, String... permissions) {
+    public PermissionUtils(Context context, String... permissions) {
         this.context = context;
         this.PERMISSIONS = permissions;
     }

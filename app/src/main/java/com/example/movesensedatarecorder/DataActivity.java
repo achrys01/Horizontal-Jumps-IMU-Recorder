@@ -18,6 +18,11 @@ import com.example.movesensedatarecorder.model.DataPoint;
 import com.example.movesensedatarecorder.service.BleIMUService;
 import com.example.movesensedatarecorder.service.GattActions;
 import com.example.movesensedatarecorder.utils.DataUtils;
+import com.example.movesensedatarecorder.utils.MsgUtils;
+
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import static com.example.movesensedatarecorder.service.GattActions.ACTION_GATT_MOVESENSE_EVENTS;
 import static com.example.movesensedatarecorder.service.GattActions.EVENT;
@@ -29,6 +34,7 @@ public class DataActivity extends Activity {
 
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
+    private static final int REQUEST_SUBJECT = 0;
 
     private TextView mAccView, mGyroView, mStatusView, deviceView;
     private ImageButton buttonRecord;
@@ -61,8 +67,19 @@ public class DataActivity extends Activity {
         //record button listener
         buttonRecord = findViewById(R.id.button_recording);
         buttonRecord.setOnClickListener(v -> {
-            startActivity(new Intent(getApplicationContext(), NewExpActivity.class));
+            Intent intentExp =new Intent(getApplicationContext(), NewExpActivity.class);
+            startActivityForResult(intentExp, REQUEST_SUBJECT);
+            //startActivity(new Intent(getApplicationContext(), NewExpActivity.class));
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_SUBJECT && resultCode == Activity.RESULT_OK) {
+            String subject = data.getStringExtra("subject");
+            String movement = data.getStringExtra("movement");
+            MsgUtils.showToast(getApplicationContext(),"got: "+subject+"-"+movement);
+        }
     }
 
     @Override

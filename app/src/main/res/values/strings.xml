@@ -18,4 +18,87 @@
     <string name="unreachable">This should not happen!?</string>
     <string name="unrecognized">Unrecognized data</string>
     <string name="data">Data</string>
+
+    <string-array name="movement_values">
+        <item>thruster</item>
+        <item>cluster</item>
+        <item>squat clean</item>
+        <item>power clean</item>
+        <item>muscle clean</item>
+        <item>hang squat clean</item>
+        <item>hang power clean</item>
+        <item>hang muscle clean</item>
+        <item>shoulder press</item>
+        <item>push press</item>
+        <item>push jerk</item>
+        <item>split jerk</item>
+        <item>clean and jerk</item>
+        <item>squat snatch</item>
+        <item>power snatch</item>
+        <item>muscle snatch</item>
+        <item>hang squat snatch</item>
+        <item>hang power snatch</item>
+        <item>hang muscle snatch</item>
+        <item>deadlift</item>
+        <item>overhead squat</item>
+        <item>back squat</item>
+        <item>front squat</item>
+        <item>air squat</item>
+        <item>lunge</item>
+        <item>run</item>
+        <item>row</item>
+        <item>bike erg</item>
+        <item>echo bike</item>
+        <item>ski erg</item>
+        <item>air runner</item>
+        <item>single under</item>
+        <item>double under</item>
+        <item>sit up</item>
+        <item>burpee</item>
+        <item>burpee over barbell</item>
+        <item>burpee facing barbell</item>
+        <item>box jump</item>
+        <item>box jump over</item>
+        <item>burpee box jump over</item>
+        <item>box step up</item>
+        <item>push up</item>
+        <item>hand release push up</item>
+        <item>strict handstand push up</item>
+        <item>kipping handstand push up</item>
+        <item>handstand walk</item>
+        <item>wall walk</item>
+        <item>strict pull up</item>
+        <item>kipping pull up</item>
+        <item>butterfly pull up</item>
+        <item>strict ctb pull up</item>
+        <item>kipping ctb pull up</item>
+        <item>butterfly ctb pull up</item>
+        <item>strict bar muscle up</item>
+        <item>bar muscle up</item>
+        <item>strict ring muscle up</item>
+        <item>ring muscle up</item>
+        <item>toes to bar</item>
+        <item>dumbbell snatch</item>
+        <item>devil press</item>
+        <item>ktb swing</item>
+        <item>ring dip</item>
+    </string-array>
+
+    <string-array name="location_values">
+        <item>chest</item>
+        <item>wrist</item>
+        <item>ankle</item>
+    </string-array>
+
+    <string-array name="time_values">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
 </resources>

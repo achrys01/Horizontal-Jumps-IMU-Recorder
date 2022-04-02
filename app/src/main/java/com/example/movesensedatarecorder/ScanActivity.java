@@ -5,9 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
@@ -33,12 +31,11 @@ import java.util.List;
 import static android.bluetooth.le.ScanSettings.CALLBACK_TYPE_ALL_MATCHES;
 import static com.example.movesensedatarecorder.service.UUIDs.MOVESENSE;
 import static com.example.movesensedatarecorder.service.UUIDs.MOVESENSE_2_0_SERVICE;
-import static com.example.movesensedatarecorder.utils.MsgUtils.createDialog;
 import static com.example.movesensedatarecorder.utils.MsgUtils.showToast;
 
 import com.example.movesensedatarecorder.adapters.BTDeviceAdapter;
 import com.example.movesensedatarecorder.utils.MsgUtils;
-import com.example.movesensedatarecorder.utils.PermissionUtility;
+import com.example.movesensedatarecorder.utils.PermissionUtils;
 
 public class ScanActivity extends AppCompatActivity {
 
@@ -62,7 +59,7 @@ public class ScanActivity extends AppCompatActivity {
             android.Manifest.permission.BLUETOOTH_SCAN,
             android.Manifest.permission.BLUETOOTH_ADMIN
     };
-    private PermissionUtility permissionUtility;
+    private PermissionUtils permissionUtils;
 
     static {
         ScanFilter scanFilter = new ScanFilter.Builder()
@@ -200,11 +197,11 @@ public class ScanActivity extends AppCompatActivity {
             showToast(  getApplicationContext(), "BLE not supported");
             finish();
         } else {
-            permissionUtility = new PermissionUtility(this, PERMISSIONS);
-            if(permissionUtility.arePermissionsEnabled()){
+            permissionUtils = new PermissionUtils(this, PERMISSIONS);
+            if(permissionUtils.arePermissionsEnabled()){
                 Log.d(TAG, "Permission granted 1");
             } else {
-                permissionUtility.requestMultiplePermissions();
+                permissionUtils.requestMultiplePermissions();
             }
         }
 
@@ -221,7 +218,7 @@ public class ScanActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(permissionUtility.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
+        if(permissionUtils.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
             Log.d(TAG, "Permission granted 2");
         }
     }
