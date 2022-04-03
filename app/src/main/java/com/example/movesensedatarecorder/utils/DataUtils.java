@@ -12,7 +12,6 @@ import java.util.Arrays;
 
 public class DataUtils {
 
-    //TODO: fix gyro data
     public static DataPoint IMU6DataConverter(byte[] data){
         int len = data.length;
         int sensorNum = 2; //IMU6 has 2 sensors: acc and gyro
@@ -21,8 +20,8 @@ public class DataUtils {
         int coordinates = 3;
         int numOfSamples = (len - 6) / (sensorNum * coordinates * dataSize); //sensorNum data types, 3 coordinates, 4 bytes each
         // parse and interpret the data, ...
-        Log.i("data length: ", String.valueOf(len));
-        Log.i("data: ", Arrays.toString(data));
+        //Log.i("data length: ", String.valueOf(len));
+        //Log.i("data: ", Arrays.toString(data));
         if(((len - 6f) / (sensorNum * coordinates * dataSize)) % 1 == 0){
 
             int time = DataUtils.fourBytesToInt(data, offset);
@@ -85,7 +84,4 @@ public class DataUtils {
         return gyroStr;
     }
 
-    public static void saveDataToList(DataPoint dataPoint) {
-        //TODO
-    }
 }

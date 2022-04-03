@@ -89,8 +89,10 @@ public class NewExpActivity extends AppCompatActivity {
         buttonRecord = findViewById(R.id.button_record);
         buttonRecord.setOnClickListener(v -> {
             //startActivity(new Intent(getApplicationContext(), DataActivity.class));
+            String subjConcat = subjSpinner.getSelectedItem().toString();
+            String subjID = (subjConcat.substring(subjConcat.lastIndexOf("_") + 1));
             setResult(Activity.RESULT_OK,
-                    new Intent().putExtra(EXTRAS_EXP_SUBJ, subjSpinner.getSelectedItem().toString())
+                    new Intent().putExtra(EXTRAS_EXP_SUBJ, subjID)
                             .putExtra(EXTRAS_EXP_MOV, movSpinner.getSelectedItem().toString())
                             .putExtra(EXTRAS_EXP_LOC, locSpinner.getSelectedItem().toString())
                             .putExtra(EXTRAS_EXP_TIME, timeSpinner.getSelectedItem().toString()));

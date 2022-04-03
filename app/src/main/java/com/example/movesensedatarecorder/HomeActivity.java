@@ -142,7 +142,7 @@ public class HomeActivity extends AppCompatActivity {
             saveToCSV();
         } catch (Exception e) {
             e.printStackTrace();
-            MsgUtils.showToast(getApplicationContext(), "could not export list");
+            MsgUtils.showToast(getApplicationContext(), "unable to export list");
         }
     }
 
