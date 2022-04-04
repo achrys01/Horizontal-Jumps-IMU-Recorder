@@ -204,15 +204,15 @@ public class BleIMUService extends Service {
                 byte[] data = characteristic.getValue();
                 if (data[0] == MOVESENSE_RESPONSE && data[1] == REQUEST_ID) {
 
-                    DataPoint dataPoint = DataUtils.IMU6DataConverter(data);
+                    ArrayList<DataPoint> dataPointList = DataUtils.IMU6DataConverter(data);
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        if (Objects.isNull(dataPoint)){
+                        if (Objects.isNull(dataPointList)){
                             return;
                         }
                     }
                     //broadcast data update
-                    broadcastMovesenseUpdate(dataPoint);
+                    broadcastMovesenseUpdate(dataPointList);
                 }
             }
         }
@@ -226,10 +226,10 @@ public class BleIMUService extends Service {
     }
 
     //Broadcast methods for data
-    private void broadcastMovesenseUpdate(final DataPoint dataPoint) {
+    private void broadcastMovesenseUpdate(final ArrayList<DataPoint> dataPointList) {
         final Intent intent = new Intent(ACTION_GATT_MOVESENSE_EVENTS);
         intent.putExtra(EVENT, Event.DATA_AVAILABLE);
-        intent.putExtra(MOVESENSE_DATA, (Parcelable) dataPoint);
+        intent.putParcelableArrayListExtra(MOVESENSE_DATA, dataPointList);
         sendBroadcast(intent);
     }
 

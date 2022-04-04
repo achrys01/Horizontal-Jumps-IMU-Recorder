@@ -58,7 +58,7 @@ public class DataActivity extends Activity {
     public static final String EXTRAS_EXP_LOC = "EXP_LOC";
     public static final String EXTRAS_EXP_TIME = "EXP_TIME";
 
-    private TextView mAccView, mGyroView, mStatusView, deviceView;
+    private TextView mAccView, mGyroView, mStatusView, deviceView, expTitleView;
     private ImageButton buttonRecord;
 
     private String mDeviceAddress;
@@ -91,11 +91,13 @@ public class DataActivity extends Activity {
         mGyroView = findViewById(R.id.gyro_view);
         mStatusView = findViewById(R.id.status_view);
         buttonRecord = findViewById(R.id.button_recording);
+        expTitleView = findViewById(R.id.exp_title_view);
 
         Resources resources = getResources();
         startRecordDrawable = ResourcesCompat.getDrawable(resources, R.drawable.start_record_icon, null);
         stopRecordDrawable = ResourcesCompat.getDrawable(resources, R.drawable.stop_record_icon, null);
         buttonRecord.setBackground(startRecordDrawable);
+        expTitleView.setText(R.string.record_exp);
 
         // NB! bind to the BleIMUService
         // Use onResume or onStart to register a BroadcastReceiver.
@@ -116,6 +118,7 @@ public class DataActivity extends Activity {
                     MsgUtils.showToast(getApplicationContext(), "unable to save data");
                 }
                 buttonRecord.setBackground(startRecordDrawable);
+                expTitleView.setText(R.string.record_exp);
                 record = false;
             }
         });
@@ -134,7 +137,10 @@ public class DataActivity extends Activity {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                buttonRecord.setBackground(startRecordDrawable);
+                runOnUiThread(() -> {
+                    buttonRecord.setBackground(startRecordDrawable);
+                    expTitleView.setText(R.string.record_exp);
+                });
                 record = false;
                 timer.cancel();
                 Log.e(TAG,"TimerTask finished");
@@ -158,6 +164,7 @@ public class DataActivity extends Activity {
             mExpID = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
             record = true;
             buttonRecord.setBackground(stopRecordDrawable);
+            expTitleView.setText(R.string.recording_exp);
             //automatic stop
             resetTimerAndTimerTask();
             timer.schedule(timerTask, 1000 * Long.parseLong(mTimeRecording));
@@ -246,12 +253,15 @@ public class DataActivity extends Activity {
                             mGyroView.setText("-");
                             break;
                         case DATA_AVAILABLE:
-                            DataPoint dataPoint = (DataPoint) intent.getParcelableExtra(MOVESENSE_DATA);
-                            //Log.i(TAG, "got data: " + dataPoint);
+                            ArrayList<DataPoint> dataPointList = intent.getParcelableArrayListExtra(MOVESENSE_DATA);
+                            Log.i(TAG, "got data: " + dataPointList);
+                            DataPoint dataPoint = dataPointList.get(0);
 
                             if(record){
-                                ExpPoint expPoint = new ExpPoint(dataPoint, mExpID, mMov, mSubjID, mLoc);
-                                expSet.add(expPoint);
+                                for (DataPoint d : dataPointList) {
+                                    ExpPoint expPoint = new ExpPoint(d, mExpID, mMov, mSubjID, mLoc);
+                                    expSet.add(expPoint);
+                                }
                             }
                             mStatusView.setText("Data received!");
                             String accStr = DataUtils.getAccAsStr(dataPoint);

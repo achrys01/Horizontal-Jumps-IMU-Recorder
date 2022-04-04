@@ -8,11 +8,14 @@ import java.lang.reflect.Executable;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class DataUtils {
 
-    public static DataPoint IMU6DataConverter(byte[] data){
+    public static ArrayList<DataPoint> IMU6DataConverter(byte[] data){
+        ArrayList<DataPoint> dataPointList = new ArrayList<>();
         int len = data.length;
         int sensorNum = 2; //IMU6 has 2 sensors: acc and gyro
         int offset = 2;
@@ -24,18 +27,23 @@ public class DataUtils {
         //Log.i("data: ", Arrays.toString(data));
         if(((len - 6f) / (sensorNum * coordinates * dataSize)) % 1 == 0){
 
-            int time = DataUtils.fourBytesToInt(data, offset);
+            for (int i = 0; i < numOfSamples; i++) {
+                int time = DataUtils.fourBytesToInt(data, offset);
 
-            float accX = DataUtils.fourBytesToFloat(data, offset + dataSize);
-            float accY = DataUtils.fourBytesToFloat(data, offset + 2 * dataSize);
-            float accZ = DataUtils.fourBytesToFloat(data, offset + 3 * dataSize);
+                int sampleOffset = offset + i * 12;
+                float accX = DataUtils.fourBytesToFloat(data, sampleOffset + dataSize);
+                float accY = DataUtils.fourBytesToFloat(data, sampleOffset + 2 * dataSize);
+                float accZ = DataUtils.fourBytesToFloat(data, sampleOffset + 3 * dataSize);
 
-            float gyroX = DataUtils.fourBytesToFloat(data, offset + dataSize + (numOfSamples) * 12);
-            float gyroY = DataUtils.fourBytesToFloat(data, offset + 2 * dataSize + (numOfSamples) * 12);
-            float gyroZ = DataUtils.fourBytesToFloat(data, offset + 3 * dataSize + (numOfSamples) * 12);
+                float gyroX = DataUtils.fourBytesToFloat(data, sampleOffset + dataSize + (numOfSamples) * 12);
+                float gyroY = DataUtils.fourBytesToFloat(data, sampleOffset + 2 * dataSize + (numOfSamples) * 12);
+                float gyroZ = DataUtils.fourBytesToFloat(data, sampleOffset + 3 * dataSize + (numOfSamples) * 12);
 
-            DataPoint datapoint = new DataPoint(time, accX, accY,accZ, gyroX, gyroY, gyroZ);
-            return datapoint;
+                DataPoint datapoint = new DataPoint(time, accX, accY, accZ, gyroX, gyroY, gyroZ);
+                dataPointList.add(datapoint);
+                //return datapoint;
+            }
+            return dataPointList;
         } else {
             return null;
         }

@@ -18,6 +18,8 @@
     <string name="unreachable">This should not happen!?</string>
     <string name="unrecognized">Unrecognized data</string>
     <string name="data">Data</string>
+    <string name="record_exp">record experiment</string>
+    <string name="recording_exp">recording…</string>
 
     <string-array name="movement_values">
         <item>thruster</item>
@@ -100,5 +102,10 @@
         <item>8</item>
         <item>9</item>
         <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
     </string-array>
 </resources>
