@@ -248,9 +248,9 @@ public class DataActivity extends Activity {
                         case MOVESENSE_NOTIFICATIONS_ENABLED:
                         case MOVESENSE_SERVICE_DISCOVERED:
                             mStatusView.setText(event.toString());
-                            mStatusView.setText("Requesting data...");
-                            mAccView.setText("-");
-                            mGyroView.setText("-");
+                            mStatusView.setText(R.string.requesting);
+                            mAccView.setText(R.string.no_info);
+                            mGyroView.setText(R.string.no_info);
                             break;
                         case DATA_AVAILABLE:
                             ArrayList<DataPoint> dataPointList = intent.getParcelableArrayListExtra(MOVESENSE_DATA);
@@ -263,7 +263,7 @@ public class DataActivity extends Activity {
                                     expSet.add(expPoint);
                                 }
                             }
-                            mStatusView.setText("Data received!");
+                            mStatusView.setText(R.string.received);
                             String accStr = DataUtils.getAccAsStr(dataPoint);
                             String gyroStr = DataUtils.getGyroAsStr(dataPoint);
                             mAccView.setText(accStr);
@@ -271,12 +271,12 @@ public class DataActivity extends Activity {
 
                             break;
                         case MOVESENSE_SERVICE_NOT_AVAILABLE:
-                            mStatusView.setText("IMU6 service not available");
+                            mStatusView.setText(R.string.no_service);
                             break;
                         default:
-                            mStatusView.setText("Unexpected error");
-                            mAccView.setText("-");
-                            mGyroView.setText("-");
+                            mStatusView.setText(R.string.error);
+                            mAccView.setText(R.string.no_info);
+                            mGyroView.setText(R.string.no_info);
 
                     }
                 }
