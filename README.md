@@ -6,3 +6,5 @@ Data will later on be used on HAR. The goal is to train a ML model with data acq
 Many pieces of code were provided by Anders Lindström at KTH mobile applications course in 2021.
 
 If you would like to use this app for your experiment, make sure to download the DFU and update it to your sensor using Movesense showcase app. If your experiment requires different subscription settings, send me a message requesting the addition of this feature. If it's of use for the sports science community, I'd gladly develop it.
+
+ >> If you use the code or extend it please cite it <<
