@@ -123,7 +123,7 @@ public class ScanActivity extends AppCompatActivity {
                     if (mScanning) {
                         mScanning = false;
                         scanner.stopScan(mScanCallback);
-                        //showToast(getApplicationContext(), "BLE scan stopped");
+                        showToast(getApplicationContext(), "BLE scan stopped");
                     }
                 }
             }, scanPeriod);
@@ -136,7 +136,7 @@ public class ScanActivity extends AppCompatActivity {
             }
             scanner.startScan(mScanCallback);
             mScanInfoView.setText(R.string.no_devices_found);
-            //showToast(getApplicationContext(),"BLE scan started");
+            showToast(getApplicationContext(),"BLE scan started");
         }
     }
 
@@ -146,7 +146,7 @@ public class ScanActivity extends AppCompatActivity {
                     mBluetoothAdapter.getBluetoothLeScanner();
             scanner.stopScan(mScanCallback);
             mScanning = false;
-            //showToast(getApplicationContext(),"BLE scan stopped");
+            showToast(getApplicationContext(),"BLE scan stopped");
         }
     }
 

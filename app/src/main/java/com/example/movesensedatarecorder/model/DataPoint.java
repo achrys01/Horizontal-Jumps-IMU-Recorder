@@ -11,7 +11,7 @@ public class DataPoint implements Parcelable {
     private float accX, accY, accZ, gyroX, gyroY, gyroZ;
     private int time;
 
-    public DataPoint(int time, float accX,float accY,float accZ,float gyroX,float gyroY,float gyroZ ){
+    public DataPoint(int time, float accX,float accY,float accZ,float gyroX,float gyroY,float gyroZ ){ 
         this.time = time;
         this.accX = accX;
         this.accY = accY;

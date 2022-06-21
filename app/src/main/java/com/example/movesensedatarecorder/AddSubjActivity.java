@@ -44,9 +44,6 @@ public class AddSubjActivity extends AppCompatActivity {
         subjID = findViewById(R.id.textView_subj_id);
         name = findViewById(R.id.edit_text_name);
         lastName = findViewById(R.id.edit_text_last_name);
-        height = findViewById(R.id.edit_text_height);
-        weight = findViewById(R.id.edit_text_weight);
-        email = findViewById(R.id.edit_text_email);
         buttonSaveSubj = findViewById(R.id.button_save);
 
         //save button listener
@@ -68,10 +65,6 @@ public class AddSubjActivity extends AppCompatActivity {
         //error handler to fill all fields
         String mName = String.valueOf(name.getText());
         String mLastName = String.valueOf(lastName.getText());
-        String mWeight = String.valueOf(weight.getText());
-        String mHeight = String.valueOf(height.getText());
-        String mEmail = String.valueOf(email.getText());
-        double dHeight, dWeight;
         if (TextUtils.isEmpty(mName)) {
             name.setError("Name is required");
             name.requestFocus();
@@ -82,37 +75,8 @@ public class AddSubjActivity extends AppCompatActivity {
             lastName.requestFocus();
             return;
         }
-        if (TextUtils.isEmpty(mHeight)) {
-            height.setError("Height is required");
-            height.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(mWeight)) {
-            weight.setError("Weight is required");
-            weight.requestFocus();
-            return;
-        }
-        if (TextUtils.isEmpty(mEmail)) {
-            email.setError("Email is required");
-            email.requestFocus();
-            return;
-        }
-        try {
-            dHeight = Double.parseDouble(mHeight);
-        } catch (Exception e) {
-            height.setError("Wrong input format");
-            height.requestFocus();
-            return;
-        }
-        try {
-            dWeight = Double.parseDouble(mWeight);
-        } catch (Exception e) {
-            weight.setError("Wrong input format");
-            weight.requestFocus();
-            return;
-        }
         //create subject object
-        Subject subject = new Subject(mName.toLowerCase(), mLastName.toLowerCase(), mEmail.toLowerCase(), dHeight, dWeight, IDnum);
+        Subject subject = new Subject(mName.toLowerCase(), mLastName.toLowerCase(), IDnum);
         Log.i(TAG, "subject created: " + subject);
         //read file if it exists, convert to list, add new subject to list and save
         boolean fileExist = fileExist(FILE_NAME);
