@@ -6,7 +6,7 @@
     <string name="exp_subj">Export subjects data to csv</string>
     <string name="get_data">Get data (IMU6 @52Hz)</string>
 
-    <string name="new_exp">record experiment</string>
+    <string name="new_exp">record</string>
     <string name="no_acc">No acceleration data</string>
     <string name="no_gyro">No angular velocity data</string>
     <string name="acc">Acceleration (m/s²)</string>
@@ -32,9 +32,9 @@
     </string-array>
 
     <string-array name="location_values">
-        <item>chest</item>
-        <item>wrist</item>
-        <item>ankle</item>
+        <item>Left ankle</item>
+        <item>Right ankle</item>
+
     </string-array>
 
     <string-array name="time_values">

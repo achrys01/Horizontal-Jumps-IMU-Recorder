@@ -55,7 +55,6 @@ public class BleIMUService extends Service {
 
         // Previously connected device - try to reconnect
         if (address.equals(mBluetoothDeviceAddress) && mBluetoothGatt != null) {
-            Log.d(TAG, "Trying to use an existing mBluetoothGatt for connection.");
             boolean result = mBluetoothGatt.connect();
             return result;
         }

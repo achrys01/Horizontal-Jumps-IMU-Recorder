@@ -29,9 +29,8 @@ public class AddSubjActivity extends AppCompatActivity {
     private static final String TAG = AddSubjActivity.class.getSimpleName();
     private String IDnum;
     private TextView subjID;
-    private EditText name, lastName, height, weight, email;
+    private EditText name, lastName;
     private Button buttonSaveSubj;
-    private Handler handlerSave;
     private List<Subject> subjSet = new ArrayList<>();
     private String FILE_NAME = "subjects_data";
 
@@ -109,5 +108,4 @@ public class AddSubjActivity extends AppCompatActivity {
         oos.writeObject(subjSet);
         oos.close();
     }
-
 }

@@ -1,6 +1,5 @@
 package com.example.movesensedatarecorder;
 
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -39,6 +38,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.core.content.res.ResourcesCompat;
 
 import static com.example.movesensedatarecorder.service.GattActions.ACTION_GATT_MOVESENSE_EVENTS;
@@ -56,23 +56,20 @@ public class DataActivity extends Activity {
     public static final String EXTRAS_EXP_SUBJ = "EXP_SUBJ";
     public static final String EXTRAS_EXP_MOV = "EXP_MOV";
     public static final String EXTRAS_EXP_LOC = "EXP_LOC";
-    public static final String EXTRAS_EXP_TIME = "EXP_TIME";
 
-    private TextView mAccView, mGyroView, mStatusView, deviceView, expTitleView;
+    private TextView mStatusView, deviceView, expTitleView;
     private ImageButton buttonRecord;
 
     private String mDeviceAddress;
     private BleIMUService mBluetoothLeService;
 
-    private String mSubjID, mMov, mLoc, mTimeRecording, mExpID;
+    private String mSubjID, mMov, mLoc, mExpID;
     private Drawable startRecordDrawable;
     private Drawable stopRecordDrawable;
-    private TimerTask timerTask;
-    private Timer timer;
     private boolean record = false;
     private List<ExpPoint> expSet = new ArrayList<>();
-    private String content;
     private static final int CREATE_FILE = 1;
+    private String content;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,11 +82,9 @@ public class DataActivity extends Activity {
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
         // set up ui references
-        deviceView = findViewById(R.id.device_view);
+        deviceView = findViewById(R.id.chest_IMU_view);
         deviceView.setText("Connected to:\n" + deviceName);
-        mAccView = findViewById(R.id.acc_view);
-        mGyroView = findViewById(R.id.gyro_view);
-        mStatusView = findViewById(R.id.status_view);
+        mStatusView = findViewById(R.id.chest_IMU_status);
         buttonRecord = findViewById(R.id.button_recording);
         expTitleView = findViewById(R.id.exp_title_view);
 
@@ -99,7 +94,6 @@ public class DataActivity extends Activity {
         buttonRecord.setBackground(startRecordDrawable);
         expTitleView.setText(R.string.record_exp);
 
-        // NB! bind to the BleIMUService
         // Use onResume or onStart to register a BroadcastReceiver.
         Intent gattServiceIntent = new Intent(this, BleIMUService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
@@ -110,7 +104,6 @@ public class DataActivity extends Activity {
                 Intent intentExp = new Intent(getApplicationContext(), NewExpActivity.class);
                 startActivityForResult(intentExp, REQUEST_SUBJECT);
             } else {
-                timer.cancel();
                 try {
                     exportData();
                 } catch (IOException | ClassNotFoundException e) {
@@ -122,35 +115,6 @@ public class DataActivity extends Activity {
                 record = false;
             }
         });
-
-        resetTimerAndTimerTask();
-    }
-
-    private void resetTimerAndTimerTask() {
-        if (timer != null){
-            timer.cancel();
-        }
-        if (timerTask != null){
-            timerTask.cancel();
-        }
-        timer = new Timer();
-        timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(() -> {
-                    buttonRecord.setBackground(startRecordDrawable);
-                    expTitleView.setText(R.string.record_exp);
-                });
-                record = false;
-                timer.cancel();
-                Log.e(TAG,"TimerTask finished");
-                try {
-                    exportData();
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
     }
 
     @Override
@@ -160,14 +124,11 @@ public class DataActivity extends Activity {
             mSubjID = data.getStringExtra(EXTRAS_EXP_SUBJ);
             mMov = data.getStringExtra(EXTRAS_EXP_MOV);
             mLoc = data.getStringExtra(EXTRAS_EXP_LOC);
-            mTimeRecording = data.getStringExtra(EXTRAS_EXP_TIME);
             mExpID = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
             record = true;
             buttonRecord.setBackground(stopRecordDrawable);
             expTitleView.setText(R.string.recording_exp);
-            //automatic stop
-            resetTimerAndTimerTask();
-            timer.schedule(timerTask, 1000 * Long.parseLong(mTimeRecording));
+
         } else if (resultCode == RESULT_OK && requestCode == CREATE_FILE) {
             OutputStream fileOutputStream = null;
             try {
@@ -187,29 +148,6 @@ public class DataActivity extends Activity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-        if (mBluetoothLeService != null) {
-            final boolean result = mBluetoothLeService.connect(mDeviceAddress);
-            Log.d(TAG, "Connect request result=" + result);
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(mGattUpdateReceiver);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unbindService(mServiceConnection);
-        mBluetoothLeService = null;
-        timer.cancel();
-    }
 
     //Callback methods to manage the Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -249,8 +187,6 @@ public class DataActivity extends Activity {
                         case MOVESENSE_SERVICE_DISCOVERED:
                             mStatusView.setText(event.toString());
                             mStatusView.setText(R.string.requesting);
-                            mAccView.setText(R.string.no_info);
-                            mGyroView.setText(R.string.no_info);
                             break;
                         case DATA_AVAILABLE:
                             ArrayList<DataPoint> dataPointList = intent.getParcelableArrayListExtra(MOVESENSE_DATA);
@@ -266,8 +202,6 @@ public class DataActivity extends Activity {
                             mStatusView.setText(R.string.received);
                             String accStr = DataUtils.getAccAsStr(dataPoint);
                             String gyroStr = DataUtils.getGyroAsStr(dataPoint);
-                            mAccView.setText(accStr);
-                            mGyroView.setText(gyroStr);
 
                             break;
                         case MOVESENSE_SERVICE_NOT_AVAILABLE:
@@ -275,9 +209,6 @@ public class DataActivity extends Activity {
                             break;
                         default:
                             mStatusView.setText(R.string.error);
-                            mAccView.setText(R.string.no_info);
-                            mGyroView.setText(R.string.no_info);
-
                     }
                 }
             }
