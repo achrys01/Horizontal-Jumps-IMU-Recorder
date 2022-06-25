@@ -4,4 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewRecording"/>
+    tools:context=".NewRecording">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/button_recording"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.camera.view.PreviewView
+            android:id="@+id/cam_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </androidx.camera.view.PreviewView>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/button_recording"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/start_record_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
