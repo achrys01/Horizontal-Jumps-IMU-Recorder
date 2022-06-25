@@ -92,7 +92,6 @@ public class DataActivity extends Activity {
         startRecordDrawable = ResourcesCompat.getDrawable(resources, R.drawable.start_record_icon, null);
         stopRecordDrawable = ResourcesCompat.getDrawable(resources, R.drawable.stop_record_icon, null);
         buttonRecord.setBackground(startRecordDrawable);
-        expTitleView.setText(R.string.record_exp);
 
         // Use onResume or onStart to register a BroadcastReceiver.
         Intent gattServiceIntent = new Intent(this, BleIMUService.class);
