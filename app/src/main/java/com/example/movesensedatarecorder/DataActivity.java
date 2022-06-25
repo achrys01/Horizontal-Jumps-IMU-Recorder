@@ -101,7 +101,7 @@ public class DataActivity extends Activity {
         //record button listener
         buttonRecord.setOnClickListener(v -> {
             if (!record) {
-                Intent intentExp = new Intent(getApplicationContext(), NewExpActivity.class);
+                Intent intentExp = new Intent(getApplicationContext(), NewRecording.class);
                 startActivityForResult(intentExp, REQUEST_SUBJECT);
             } else {
                 try {

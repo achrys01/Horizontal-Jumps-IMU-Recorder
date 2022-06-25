@@ -1,15 +1,14 @@
 package com.example.movesensedatarecorder;
 
-import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-public class NewExpActivity extends AppCompatActivity {
+import android.os.Bundle;
+
+public class NewRecording extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_data);
-
+        setContentView(R.layout.activity_rec);
     }
 }

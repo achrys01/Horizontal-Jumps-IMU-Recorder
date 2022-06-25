@@ -11,7 +11,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
-
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
@@ -24,6 +26,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MovesenseDataRecorder">
         <activity
+            android:name=".NewRecording"
+            android:exported="false" />
+        <activity
             android:name=".HomeActivity"
             android:exported="true">
             <intent-filter>
@@ -35,30 +40,27 @@
         <activity
             android:name=".DataActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"></activity>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AddSubjActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AddSubj.Dialog"></activity>
-
+            android:theme="@style/AddSubj.Dialog" />
         <activity
             android:name=".ScanActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/Scan.Dialog">></activity>
-
+            android:theme="@style/Scan.Dialog" />
         <activity
-            android:name=".NewExpActivity"
+            android:name=".NewRecording"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/Scan.Dialog">></activity>
+            android:theme="@style/Scan.Dialog" />
 
         <service
             android:name=".service.BleIMUService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
     </application>
 
 </manifest>
