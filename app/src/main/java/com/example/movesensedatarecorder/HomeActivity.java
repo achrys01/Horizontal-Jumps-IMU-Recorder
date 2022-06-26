@@ -137,7 +137,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
         try {
-            String heading = "name,lastName,email,height,weight,subjID";
+            String heading = "name,lastName, subjID";
             content = heading + "\n" + recordAsCsv();
             saveToCSV();
         } catch (Exception e) {

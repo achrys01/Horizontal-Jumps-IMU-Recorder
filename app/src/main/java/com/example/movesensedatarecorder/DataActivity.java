@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -57,8 +59,8 @@ public class DataActivity extends Activity {
     public static final String EXTRAS_EXP_MOV = "EXP_MOV";
     public static final String EXTRAS_EXP_LOC = "EXP_LOC";
 
-    private TextView mStatusView, deviceView, expTitleView;
-    private ImageButton buttonRecord;
+    private TextView mStatusView,mStatusView1, deviceView, deviceView1;
+    private Button buttonRecord,buttonSave, buttonAddIMU;
 
     private String mDeviceAddress;
     private BleIMUService mBluetoothLeService;
@@ -68,7 +70,8 @@ public class DataActivity extends Activity {
     private Drawable stopRecordDrawable;
     private boolean record = false;
     private List<ExpPoint> expSet = new ArrayList<>();
-    private static final int CREATE_FILE = 1;
+    private static final int NEW_DEVICE = 1;
+    private static final int SAVE_FILE = 2;
     private String content;
 
     @Override
@@ -83,15 +86,24 @@ public class DataActivity extends Activity {
 
         // set up ui references
         deviceView = findViewById(R.id.chest_IMU_view);
+        deviceView1 = findViewById(R.id.IMU1_view);
         deviceView.setText("Connected to:\n" + deviceName);
+        deviceView1.setText("Not connected");
         mStatusView = findViewById(R.id.chest_IMU_status);
-        buttonRecord = findViewById(R.id.button_recording);
-        expTitleView = findViewById(R.id.exp_title_view);
+        mStatusView1 = findViewById(R.id.IMU1_status);
+        buttonAddIMU = findViewById(R.id.button_add_IMU);
+        buttonRecord = findViewById(R.id.button_record);
+
 
         Resources resources = getResources();
         startRecordDrawable = ResourcesCompat.getDrawable(resources, R.drawable.start_record_icon, null);
         stopRecordDrawable = ResourcesCompat.getDrawable(resources, R.drawable.stop_record_icon, null);
         buttonRecord.setBackground(startRecordDrawable);
+
+
+        buttonAddIMU.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), ScanActivity.class));
+        });
 
         // Use onResume or onStart to register a BroadcastReceiver.
         Intent gattServiceIntent = new Intent(this, BleIMUService.class);
@@ -110,7 +122,6 @@ public class DataActivity extends Activity {
                     MsgUtils.showToast(getApplicationContext(), "unable to save data");
                 }
                 buttonRecord.setBackground(startRecordDrawable);
-                expTitleView.setText(R.string.record_exp);
                 record = false;
             }
         });
@@ -118,6 +129,7 @@ public class DataActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (requestCode == REQUEST_SUBJECT && resultCode == Activity.RESULT_OK) {
             expSet.clear();
             mSubjID = data.getStringExtra(EXTRAS_EXP_SUBJ);
@@ -126,9 +138,12 @@ public class DataActivity extends Activity {
             mExpID = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
             record = true;
             buttonRecord.setBackground(stopRecordDrawable);
-            expTitleView.setText(R.string.recording_exp);
+        }else if (requestCode == NEW_DEVICE && resultCode == RESULT_OK) {
+            String deviceName1 = data.getStringExtra(EXTRAS_DEVICE_NAME);
+            mDeviceAddress = data.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+            deviceView1.setText("Connected to:\n" + deviceName1);
 
-        } else if (resultCode == RESULT_OK && requestCode == CREATE_FILE) {
+        } else if (requestCode == SAVE_FILE  && resultCode == RESULT_OK) {
             OutputStream fileOutputStream = null;
             try {
                 fileOutputStream = getContentResolver().openOutputStream(data.getData());
@@ -235,7 +250,7 @@ public class DataActivity extends Activity {
         intent.setType("text/csv");
         intent.putExtra(Intent.EXTRA_TITLE, filename);
 
-        startActivityForResult(intent, CREATE_FILE);
+        startActivityForResult(intent, SAVE_FILE);
     }
 
     private String recordAsCsv() {

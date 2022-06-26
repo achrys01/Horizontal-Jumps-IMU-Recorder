@@ -178,26 +178,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/IMU2_view" />
 
-    <TextView
-        android:id="@+id/record_view"
+    <Button
+        android:id="@+id/button_record"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="RECORD"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/grey_400"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/button_recording"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:text="Record"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="40dp"/>
 
-    <ImageButton
-        android:id="@+id/button_recording"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/start_record_icon"
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginEnd="40dp"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
