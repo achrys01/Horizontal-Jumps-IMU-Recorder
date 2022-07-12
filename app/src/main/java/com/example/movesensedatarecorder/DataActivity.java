@@ -51,26 +51,24 @@ public class DataActivity extends Activity {
 
     private final static String TAG = DataActivity.class.getSimpleName();
 
+    private static final int NEW_DEVICE = 0;
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
-    private static final int REQUEST_SUBJECT = 0;
+    private static final int REQUEST_SUBJECT = 1;
     public static final String EXTRAS_EXP_SUBJ = "EXP_SUBJ";
     public static final String EXTRAS_EXP_MOV = "EXP_MOV";
     public static final String EXTRAS_EXP_LOC = "EXP_LOC";
 
-    private TextView mStatusView,mStatusView1, deviceView, deviceView1;
+    private TextView mStatusView0,mStatusView1, deviceView0, deviceView1;
+    private  String deviceAddress0, deviceAddress1, deviceName0, deviceName1;
     private Button buttonRecord,buttonSave, buttonAddIMU;
 
-    private String mDeviceAddress;
-    private BleIMUService mBluetoothLeService;
+    private BleIMUService mBluetoothLeService0, mBluetoothLeService1;
 
     private String mSubjID, mMov, mLoc, mExpID;
-    private Drawable startRecordDrawable;
-    private Drawable stopRecordDrawable;
     private boolean record = false;
     private List<ExpPoint> expSet = new ArrayList<>();
-    private static final int NEW_DEVICE = 1;
     private static final int SAVE_FILE = 2;
     private String content;
 
@@ -81,28 +79,23 @@ public class DataActivity extends Activity {
 
         // the intent from BleIMUService, that started this activity
         final Intent intent = getIntent();
-        String deviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
-        mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+        deviceName0 = intent.getStringExtra(EXTRAS_DEVICE_NAME);
+        deviceAddress0 = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
         // set up ui references
-        deviceView = findViewById(R.id.chest_IMU_view);
+        deviceView0 = findViewById(R.id.chest_IMU_view);
         deviceView1 = findViewById(R.id.IMU1_view);
-        deviceView.setText("Connected to:\n" + deviceName);
+        deviceView0.setText("Connected to:\n" + deviceName0);
         deviceView1.setText("Not connected");
-        mStatusView = findViewById(R.id.chest_IMU_status);
+        mStatusView0 = findViewById(R.id.chest_IMU_status);
         mStatusView1 = findViewById(R.id.IMU1_status);
         buttonAddIMU = findViewById(R.id.button_add_IMU);
         buttonRecord = findViewById(R.id.button_record);
 
 
-        Resources resources = getResources();
-        startRecordDrawable = ResourcesCompat.getDrawable(resources, R.drawable.start_record_icon, null);
-        stopRecordDrawable = ResourcesCompat.getDrawable(resources, R.drawable.stop_record_icon, null);
-        buttonRecord.setBackground(startRecordDrawable);
-
-
         buttonAddIMU.setOnClickListener(v -> {
-            startActivity(new Intent(getApplicationContext(), ScanActivity.class));
+            Intent intentScan = new Intent(getApplicationContext(), ScanActivity.class);
+            startActivity(intentScan, NEW_DEVICE);
         });
 
         // Use onResume or onStart to register a BroadcastReceiver.
@@ -111,37 +104,25 @@ public class DataActivity extends Activity {
 
         //record button listener
         buttonRecord.setOnClickListener(v -> {
-            if (!record) {
-                Intent intentExp = new Intent(getApplicationContext(), NewRecording.class);
-                startActivityForResult(intentExp, REQUEST_SUBJECT);
-            } else {
-                try {
-                    exportData();
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                    MsgUtils.showToast(getApplicationContext(), "unable to save data");
-                }
-                buttonRecord.setBackground(startRecordDrawable);
-                record = false;
-            }
+            Intent intentRec = new Intent(getApplicationContext(), NewRecording.class);
+            startActivityForResult(intentRec, REQUEST_SUBJECT);
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == REQUEST_SUBJECT && resultCode == Activity.RESULT_OK) {
+        if (requestCode == NEW_DEVICE && resultCode == RESULT_OK) {
+            String deviceName1 = data.getStringExtra(EXTRAS_DEVICE_NAME);
+            String deviceAddress1 = data.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+            deviceView1.setText("Connected to:\n" + deviceName1);
+
+        }else if (requestCode == REQUEST_SUBJECT && resultCode == Activity.RESULT_OK) {
             expSet.clear();
             mSubjID = data.getStringExtra(EXTRAS_EXP_SUBJ);
             mMov = data.getStringExtra(EXTRAS_EXP_MOV);
             mLoc = data.getStringExtra(EXTRAS_EXP_LOC);
             mExpID = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-            record = true;
-            buttonRecord.setBackground(stopRecordDrawable);
-        }else if (requestCode == NEW_DEVICE && resultCode == RESULT_OK) {
-            String deviceName1 = data.getStringExtra(EXTRAS_DEVICE_NAME);
-            mDeviceAddress = data.getStringExtra(EXTRAS_DEVICE_ADDRESS);
-            deviceView1.setText("Connected to:\n" + deviceName1);
 
         } else if (requestCode == SAVE_FILE  && resultCode == RESULT_OK) {
             OutputStream fileOutputStream = null;
@@ -162,25 +143,24 @@ public class DataActivity extends Activity {
         }
     }
 
-
     //Callback methods to manage the Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder service) {
-            mBluetoothLeService = ((BleIMUService.LocalBinder) service).getService();
-            if (!mBluetoothLeService.initialize()) {
+            mBluetoothLeService0 = ((BleIMUService.LocalBinder) service).getService();
+            if (!mBluetoothLeService0.initialize()) {
                 Log.i(TAG, "Unable to initialize Bluetooth");
                 finish();
             }
             // Automatically connects to the device upon successful start-up initialization.
-            mBluetoothLeService.connect(mDeviceAddress);
+            mBluetoothLeService0.connect(deviceAddress0);
             Log.i(TAG, "onServiceConnected");
         }
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
-            mBluetoothLeService = null;
+            mBluetoothLeService0 = null;
             Log.i(TAG, "onServiceDisconnected");
         }
     };
@@ -199,8 +179,8 @@ public class DataActivity extends Activity {
                         case GATT_SERVICES_DISCOVERED:
                         case MOVESENSE_NOTIFICATIONS_ENABLED:
                         case MOVESENSE_SERVICE_DISCOVERED:
-                            mStatusView.setText(event.toString());
-                            mStatusView.setText(R.string.requesting);
+                            mStatusView0.setText(event.toString());
+                            mStatusView0.setText(R.string.requesting);
                             break;
                         case DATA_AVAILABLE:
                             ArrayList<DataPoint> dataPointList = intent.getParcelableArrayListExtra(MOVESENSE_DATA);
@@ -213,16 +193,16 @@ public class DataActivity extends Activity {
                                     expSet.add(expPoint);
                                 }
                             }
-                            mStatusView.setText(R.string.received);
+                            mStatusView0.setText(R.string.received);
                             String accStr = DataUtils.getAccAsStr(dataPoint);
                             String gyroStr = DataUtils.getGyroAsStr(dataPoint);
 
                             break;
                         case MOVESENSE_SERVICE_NOT_AVAILABLE:
-                            mStatusView.setText(R.string.no_service);
+                            mStatusView0.setText(R.string.no_service);
                             break;
                         default:
-                            mStatusView.setText(R.string.error);
+                            mStatusView0.setText(R.string.error);
                     }
                 }
             }

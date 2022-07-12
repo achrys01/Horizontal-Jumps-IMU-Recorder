@@ -179,6 +179,7 @@ public class ScanActivity extends AppCompatActivity {
         }
     };
 
+    //TODO THIS INTERFERES
     private void onDeviceSelected(int position) {
         BluetoothDevice selectedDevice = mDeviceList.get(position);
         Intent intent = new Intent(ScanActivity.this, DataActivity.class);
