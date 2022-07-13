@@ -51,17 +51,14 @@ public class DataActivity extends Activity {
 
     private final static String TAG = DataActivity.class.getSimpleName();
 
-    private static final int NEW_DEVICE = 0;
-    public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
-    public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
+    private static final int REQUEST_SUBJECT = 0;
 
-    private static final int REQUEST_SUBJECT = 1;
     public static final String EXTRAS_EXP_SUBJ = "EXP_SUBJ";
     public static final String EXTRAS_EXP_MOV = "EXP_MOV";
     public static final String EXTRAS_EXP_LOC = "EXP_LOC";
 
     private TextView mStatusView0,mStatusView1, deviceView0, deviceView1;
-    private  String deviceAddress0, deviceAddress1, deviceName0, deviceName1;
+    public static String deviceAddress0, deviceAddress1, deviceName0, deviceName1;
     private Button buttonRecord,buttonSave, buttonAddIMU;
 
     private BleIMUService mBluetoothLeService0, mBluetoothLeService1;
@@ -69,7 +66,7 @@ public class DataActivity extends Activity {
     private String mSubjID, mMov, mLoc, mExpID;
     private boolean record = false;
     private List<ExpPoint> expSet = new ArrayList<>();
-    private static final int SAVE_FILE = 2;
+    private static final int SAVE_FILE = 1;
     private String content;
 
     @Override
@@ -77,30 +74,24 @@ public class DataActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data);
 
-        // the intent from BleIMUService, that started this activity
-        final Intent intent = getIntent();
-        deviceName0 = intent.getStringExtra(EXTRAS_DEVICE_NAME);
-        deviceAddress0 = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
-
         // set up ui references
         deviceView0 = findViewById(R.id.chest_IMU_view);
         deviceView1 = findViewById(R.id.IMU1_view);
         deviceView0.setText("Connected to:\n" + deviceName0);
-        deviceView1.setText("Not connected");
+        deviceView1.setText("Connected to:\n" + deviceName1);
         mStatusView0 = findViewById(R.id.chest_IMU_status);
         mStatusView1 = findViewById(R.id.IMU1_status);
         buttonAddIMU = findViewById(R.id.button_add_IMU);
         buttonRecord = findViewById(R.id.button_record);
 
-
-        buttonAddIMU.setOnClickListener(v -> {
-            Intent intentScan = new Intent(getApplicationContext(), ScanActivity.class);
-            startActivity(intentScan, NEW_DEVICE);
-        });
-
         // Use onResume or onStart to register a BroadcastReceiver.
         Intent gattServiceIntent = new Intent(this, BleIMUService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+
+        buttonAddIMU.setOnClickListener(v -> {
+            Intent intentScan = new Intent(getApplicationContext(), ScanActivity.class);
+            startActivity(intentScan);
+        });
 
         //record button listener
         buttonRecord.setOnClickListener(v -> {
@@ -111,13 +102,7 @@ public class DataActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == NEW_DEVICE && resultCode == RESULT_OK) {
-            String deviceName1 = data.getStringExtra(EXTRAS_DEVICE_NAME);
-            String deviceAddress1 = data.getStringExtra(EXTRAS_DEVICE_ADDRESS);
-            deviceView1.setText("Connected to:\n" + deviceName1);
-
-        }else if (requestCode == REQUEST_SUBJECT && resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_SUBJECT && resultCode == Activity.RESULT_OK) {
             expSet.clear();
             mSubjID = data.getStringExtra(EXTRAS_EXP_SUBJ);
             mMov = data.getStringExtra(EXTRAS_EXP_MOV);

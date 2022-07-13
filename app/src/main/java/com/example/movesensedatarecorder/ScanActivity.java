@@ -179,12 +179,17 @@ public class ScanActivity extends AppCompatActivity {
         }
     };
 
-    //TODO THIS INTERFERES
     private void onDeviceSelected(int position) {
         BluetoothDevice selectedDevice = mDeviceList.get(position);
-        Intent intent = new Intent(ScanActivity.this, DataActivity.class);
-        intent.putExtra(DataActivity.EXTRAS_DEVICE_NAME, selectedDevice.getName());
-        intent.putExtra(DataActivity.EXTRAS_DEVICE_ADDRESS, selectedDevice.getAddress());
+        if (DataActivity.deviceName0==null) {
+            DataActivity.deviceName0 = selectedDevice.getName();
+            DataActivity.deviceAddress0 = selectedDevice.getAddress();
+        }else {
+            DataActivity.deviceName1 = selectedDevice.getName();
+            DataActivity.deviceAddress1 = selectedDevice.getAddress();
+
+        }
+        Intent intent = new Intent(getApplicationContext(), DataActivity.class);
         stopScanning();
         startActivity(intent);
     }
