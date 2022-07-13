@@ -181,17 +181,10 @@ public class ScanActivity extends AppCompatActivity {
 
     private void onDeviceSelected(int position) {
         BluetoothDevice selectedDevice = mDeviceList.get(position);
-        if (DataActivity.deviceName0==null) {
-            DataActivity.deviceName0 = selectedDevice.getName();
-            DataActivity.deviceAddress0 = selectedDevice.getAddress();
-        }else {
-            DataActivity.deviceName1 = selectedDevice.getName();
-            DataActivity.deviceAddress1 = selectedDevice.getAddress();
-
-        }
-        Intent intent = new Intent(getApplicationContext(), DataActivity.class);
+        DataActivity.EXTRAS_DEVICE_NAME = selectedDevice.getName();
+        DataActivity.EXTRAS_DEVICE_ADDRESS = selectedDevice.getAddress();
         stopScanning();
-        startActivity(intent);
+        finish();
     }
 
     //requests for user permissions to access and turn on Bluetooth.

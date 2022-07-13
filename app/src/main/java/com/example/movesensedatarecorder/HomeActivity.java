@@ -45,7 +45,7 @@ public class HomeActivity extends AppCompatActivity {
 
         buttonExp = findViewById(R.id.button_exp);
         buttonExp.setOnClickListener(v -> {
-            startActivity(new Intent(getApplicationContext(), ScanActivity.class));
+            startActivity(new Intent(getApplicationContext(), DataActivity.class));
         });
 
         buttonExport = findViewById(R.id.button_export);
@@ -88,7 +88,6 @@ public class HomeActivity extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/csv");
         intent.putExtra(Intent.EXTRA_TITLE, CSV_FILE_NAME);
-
         startActivityForResult(intent, CREATE_FILE);
     }
 

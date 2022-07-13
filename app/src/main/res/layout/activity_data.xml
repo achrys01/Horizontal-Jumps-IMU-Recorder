@@ -108,22 +108,33 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/chest_IMU_view"
+        android:id="@+id/chest_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="@string/no_device"
-        android:textSize="16sp"
+        android:text="Chest IMU"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linear_layout_recording" />
 
     <TextView
+        android:id="@+id/chest_IMU_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/no_device"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chest_title" />
+
+    <TextView
         android:id="@+id/chest_IMU_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/no_device"
+        android:text="@string/no_service"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/grey_400"
         android:textSize="12sp"
@@ -131,52 +142,83 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chest_IMU_view" />
 
-    <TextView
-        android:id="@+id/IMU1_view"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/IMU_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="@string/no_device"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chest_IMU_status" />
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/chest_IMU_status"
+        tools:layout_editor_absoluteX="4dp">
 
-    <TextView
-        android:id="@+id/IMU1_status"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:text="@string/no_device"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/grey_400"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/IMU1_view" />
-    <TextView
-        android:id="@+id/IMU2_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="@string/no_device"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/IMU1_status" />
+        android:orientation="vertical"
+        android:gravity="center">
 
-    <TextView
-        android:id="@+id/IMU2_status"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/IMU1_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="Ankle L"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/IMU1_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/no_device"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/IMU1_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_service"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/grey_400"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:text="@string/no_device"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/grey_400"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/IMU2_view" />
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/IMU2_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="Ankle R"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/IMU2_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/no_device"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/IMU2_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_service"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/grey_400"
+            android:textSize="12sp" />
+    </LinearLayout>
+    </LinearLayout>
 
     <Button
         android:id="@+id/button_record"
